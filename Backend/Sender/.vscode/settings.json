@@ -1,0 +1,13 @@
+{
+    "idf.portWin": "COM4",
+    "idf.flashType": "UART",
+    "files.associations": {
+        "param.h": "c",
+        "string.h": "c",
+        "wifi.h": "c",
+        "alarm.h": "c",
+        "common.h": "c",
+        "stdio.h": "c"
+    },
+    "idf.adapterTargetName": "esp32"
+}

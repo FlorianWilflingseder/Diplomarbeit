@@ -1,4 +1,4 @@
-#define SENSOR
+#define SENSOR 25
 #define OFFSET 0.00
 #define LED 13
 #define SAMPLING_INTERVAL 20
@@ -8,11 +8,12 @@ int PH_ARRAY[ARRAY_LENGTH]; // average value of sensor feedback
 int PH_ARRAY_INDEX=0;
 
 void setup() {
-  pinMode(LED,OUTPUT);
-  Serial.begin(9600);
+  //pinMode(SENSOR,OUTPUT);
+  Serial.begin(115200);
 }
 
 void loop() {
+  //Serial.println(analogRead(SENSOR));
   static unsigned long SAMPLING_TIME = millis();
   static unsigned long PRINT_TIME = millis();
   static float VOLTAGE;
@@ -28,7 +29,8 @@ void loop() {
     Serial.print("Voltage:");
     Serial.println(VOLTAGE,2);
   }
-}
+  sleep(1);
+} 
 double AVERAGE_ARRAY(int* ARR, int NUMBER){
   int i;
   int max,min;
