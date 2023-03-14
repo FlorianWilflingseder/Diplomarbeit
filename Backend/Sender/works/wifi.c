@@ -1,10 +1,10 @@
 #include "wifi.h"
 
-#include "common.h"
-
 static EventGroupHandle_t s_wifi_event_group;
 
 static int s_retry_num = 0;
+
+static const char *TAG = "wifi";
 
 static void wifi_event_handler(void* arg, esp_event_base_t event_base,
                                 int32_t event_id, void* event_data)

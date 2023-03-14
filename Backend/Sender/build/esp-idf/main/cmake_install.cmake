@@ -1,4 +1,4 @@
-# Install script for directory: C:/Espressif/frameworks/esp-idf-v5.0.1/examples/protocols/http_server/simple/main
+# Install script for directory: E:/GitDiplomarbeit/Backend/Sender/main
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

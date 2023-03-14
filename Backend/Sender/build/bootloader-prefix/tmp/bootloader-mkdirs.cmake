@@ -5,18 +5,18 @@ cmake_minimum_required(VERSION 3.5)
 
 file(MAKE_DIRECTORY
   "C:/Espressif/frameworks/esp-idf-v5.0.1/components/bootloader/subproject"
-  "C:/Espressif/frameworks/esp-idf-v5.0.1/examples/protocols/http_server/simple/build/bootloader"
-  "C:/Espressif/frameworks/esp-idf-v5.0.1/examples/protocols/http_server/simple/build/bootloader-prefix"
-  "C:/Espressif/frameworks/esp-idf-v5.0.1/examples/protocols/http_server/simple/build/bootloader-prefix/tmp"
-  "C:/Espressif/frameworks/esp-idf-v5.0.1/examples/protocols/http_server/simple/build/bootloader-prefix/src/bootloader-stamp"
-  "C:/Espressif/frameworks/esp-idf-v5.0.1/examples/protocols/http_server/simple/build/bootloader-prefix/src"
-  "C:/Espressif/frameworks/esp-idf-v5.0.1/examples/protocols/http_server/simple/build/bootloader-prefix/src/bootloader-stamp"
+  "E:/GitDiplomarbeit/Backend/Sender/build/bootloader"
+  "E:/GitDiplomarbeit/Backend/Sender/build/bootloader-prefix"
+  "E:/GitDiplomarbeit/Backend/Sender/build/bootloader-prefix/tmp"
+  "E:/GitDiplomarbeit/Backend/Sender/build/bootloader-prefix/src/bootloader-stamp"
+  "E:/GitDiplomarbeit/Backend/Sender/build/bootloader-prefix/src"
+  "E:/GitDiplomarbeit/Backend/Sender/build/bootloader-prefix/src/bootloader-stamp"
 )
 
 set(configSubDirs )
 foreach(subDir IN LISTS configSubDirs)
-    file(MAKE_DIRECTORY "C:/Espressif/frameworks/esp-idf-v5.0.1/examples/protocols/http_server/simple/build/bootloader-prefix/src/bootloader-stamp/${subDir}")
+    file(MAKE_DIRECTORY "E:/GitDiplomarbeit/Backend/Sender/build/bootloader-prefix/src/bootloader-stamp/${subDir}")
 endforeach()
 if(cfgdir)
-  file(MAKE_DIRECTORY "C:/Espressif/frameworks/esp-idf-v5.0.1/examples/protocols/http_server/simple/build/bootloader-prefix/src/bootloader-stamp${cfgdir}") # cfgdir has leading slash
+  file(MAKE_DIRECTORY "E:/GitDiplomarbeit/Backend/Sender/build/bootloader-prefix/src/bootloader-stamp${cfgdir}") # cfgdir has leading slash
 endif()

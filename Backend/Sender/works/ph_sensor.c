@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "soc/soc_caps.h"
@@ -76,12 +77,7 @@ static void adc_calibration_deinit(adc_cali_handle_t handle) {
 #endif
 }
 
-double clamp(double d, double min, double max) {
-  const double t = d < min ? min : d;
-  return t > max ? max : t;
-}
-
-void app_main(void) {
+double get_ph() {
     adc_oneshot_chan_cfg_t config = {
         .bitwidth = ADC_BITWIDTH_DEFAULT,
         .atten = PH_SENSOR_ADC2_ATTEN,
@@ -102,6 +98,19 @@ void app_main(void) {
     int adc_raw, voltage, raw;
     double pH = 0.0;
 
+    ESP_ERROR_CHECK(adc_oneshot_read(adc2_handle, PH_SENSOR_ADC2_CHANNEL, &adc_raw));
+    raw = adc_raw;
+
+    if (do_calibration) {
+        ESP_ERROR_CHECK(adc_cali_raw_to_voltage(adc2_cali_handle, adc_raw, &voltage));
+        // ESP_LOGI(TAG, "ADC%d Channel[%d] Cali Voltage: %d mV -> %lf", ADC_UNIT_2 + 1, PH_SENSOR_ADC2_CHANNEL, voltage, pH);
+        raw = voltage;
+    }
+
+    pH = raw * (5.0 / 1024);
+    pH = (pH * 3.56) - 1.889;
+
+/*
     while (1) {
         ESP_ERROR_CHECK(adc_oneshot_read(adc2_handle, PH_SENSOR_ADC2_CHANNEL, &adc_raw));
         raw = adc_raw;
@@ -118,10 +127,13 @@ void app_main(void) {
 
         vTaskDelay(pdMS_TO_TICKS(1000));
     }
+    */
 
     ESP_ERROR_CHECK(adc_oneshot_del_unit(adc2_handle));
 
     if (do_calibration) {
         adc_calibration_deinit(adc2_cali_handle);
     }
+
+    return pH;
 }

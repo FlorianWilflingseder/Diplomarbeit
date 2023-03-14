@@ -30,3 +30,9 @@ static esp_err_t alarm_post_handler(httpd_req_t *req) {
     return ESP_OK;
 }
 
+static httpd_uri_t handler_alarm = {
+    .uri       = "/alarm",
+    .method    = HTTP_POST,
+    .handler   = alarm_post_handler,
+    .user_ctx  = NULL
+};
