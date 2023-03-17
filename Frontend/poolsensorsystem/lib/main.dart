@@ -40,24 +40,11 @@ class _MyWidgetState extends State<MyWidget> {
   IconData alarmIcon = Icons.notifications;
   String onOrOff = "ON";
 
-  Future<void> getData() async {
-    final response = await http.get(Uri.parse(
-        'https://api.openweathermap.org/data/2.5/weather?q=Berlin&appid=YOUR_API_KEY'));
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      setState(() {
-        temperature = data['main']['temp'] - 273.15;
-      });
-    } else {
-      //show a snakcbar error
-    }
-  }
+  
 
   @override
   void initState() {
     super.initState();
-    getData();
   }
 
   @override
@@ -78,7 +65,6 @@ class _MyWidgetState extends State<MyWidget> {
             padding: const EdgeInsets.only(right: 20), // Adjust the left padding
             child: IconButton(
               onPressed: () {
-                getData();
               },
               icon: const Icon(Icons.refresh, size: 40, color: Colors.white,),
             ),

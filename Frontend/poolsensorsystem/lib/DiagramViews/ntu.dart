@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import '../infoscreens/ntuinfo.dart';
 import 'chart_data.dart';
 
 class NtuData {
@@ -59,13 +60,27 @@ class _NTUStatsState extends State<NTUStats> {
     ];
   }
 
-   @override
+@override
 Widget build(BuildContext context) {
   return Scaffold(
     backgroundColor: const Color.fromARGB(255, 37, 38, 82),
     appBar: AppBar(
       backgroundColor: const Color.fromARGB(255, 37, 38, 82),
-      elevation: 0.0, 
+      elevation: 0.0,
+       actions: [
+        Padding(
+            padding: const EdgeInsets.only(right: 5), // Adjust the left padding
+            child: IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => NtuInfo()),
+                );
+              },
+              icon: const Icon(Icons.info, size: 40, color: Colors.white,),
+            ),
+          ),
+      ], 
       title: Text(
         "NTU-Diagramme",
           style: GoogleFonts.poppins(

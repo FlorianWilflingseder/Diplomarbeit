@@ -9,8 +9,9 @@ import 'package:charts_flutter/flutter.dart' as charts;
 
 class TemperatureData {
   final String day;
+  final String month;
   final double temperature;
-  TemperatureData(this.day, this.temperature);
+  TemperatureData(this.day,this.month, this.temperature);
 }
 
 class TemperaturStats extends StatefulWidget {
@@ -29,13 +30,13 @@ final List<charts.Series<TemperatureData, String>> dataTemp = [
   charts.Series<TemperatureData, String>(
     id: 'temperature',
     data: [
-      TemperatureData('Mo', 20),
-      TemperatureData('Di', 22),
-      TemperatureData('Mi', 25),
-      TemperatureData('Do', 24),
-      TemperatureData('Fr', 35),
-      TemperatureData('Sa', 21),
-      TemperatureData('So', 22),
+      TemperatureData('Mo','Jan', 20),
+      TemperatureData('Di','Jan', 22),
+      TemperatureData('Mi','Jan', 25),
+      TemperatureData('Do','Jan', 24),
+      TemperatureData('Fr','Jan', 35),
+      TemperatureData('Sa','Jan', 21),
+      TemperatureData('So','Jan', 22),
     ],
     domainFn: (TemperatureData temp, _) => temp.day,
     measureFn: (TemperatureData temp, _) => temp.temperature,
@@ -67,12 +68,24 @@ Widget build(BuildContext context) {
     backgroundColor: const Color.fromARGB(255, 37, 38, 82),
     appBar: AppBar(
       backgroundColor: const Color.fromARGB(255, 37, 38, 82),
-      elevation: 0.0, 
+      elevation: 0.0,
+      centerTitle: false, 
+      actions: [
+        Padding(
+            padding: const EdgeInsets.only(right: 5), // Adjust the left padding
+            child: IconButton(
+              onPressed: () {
+                
+              },
+              icon: const Icon(Icons.info, size: 40, color: Colors.white,),
+            ),
+          ),
+      ],
       title: Text(
         "Temperatur Diagramme",
           style: GoogleFonts.poppins(
           color:Colors.white,
-          fontSize: 25,
+          fontSize: 22,
           fontWeight: FontWeight.bold,
         ),
       ),

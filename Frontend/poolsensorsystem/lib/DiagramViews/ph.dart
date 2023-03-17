@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:poolsensorsystem/infoscreens/phinfo.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
@@ -71,6 +72,20 @@ Widget build(BuildContext context) {
     appBar: AppBar(
       backgroundColor: const Color.fromARGB(255, 37, 38, 82),
       elevation: 0.0, 
+      actions: [
+        Padding(
+            padding: const EdgeInsets.only(right: 5), // Adjust the left padding
+            child: IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PhInfo()),
+                );
+              },
+              icon: const Icon(Icons.info, size: 40, color: Colors.white,),
+            ),
+          ),
+      ],
       title: Text(
         "Ph Diagramme",
           style: GoogleFonts.poppins(
