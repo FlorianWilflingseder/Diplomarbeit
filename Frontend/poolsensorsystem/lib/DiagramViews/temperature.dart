@@ -10,7 +10,6 @@ import 'package:charts_flutter/flutter.dart' as charts;
 class TemperatureData {
   final String day;
   final double temperature;
-
   TemperatureData(this.day, this.temperature);
 }
 
@@ -40,7 +39,7 @@ final List<charts.Series<TemperatureData, String>> dataTemp = [
     ],
     domainFn: (TemperatureData temp, _) => temp.day,
     measureFn: (TemperatureData temp, _) => temp.temperature,
-    colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+    colorFn: (_, __) => charts.Color.fromHex(code:'#5493e0AF'),
   ),
 ];
 
@@ -84,7 +83,95 @@ Widget build(BuildContext context) {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            "1 Woche",
+            "24 Stunden",
+            style: GoogleFonts.poppins(
+              color:Colors.white,
+              fontSize: 40,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Center(
+            child: SfCartesianChart(
+              margin: const EdgeInsets.all(0),
+              borderWidth: 0,
+              borderColor: Colors.transparent,
+              plotAreaBorderWidth: 0,
+              primaryXAxis: NumericAxis(
+                labelStyle: const TextStyle(color: Colors.white),
+                majorGridLines: const MajorGridLines(
+                  color: Colors.transparent,
+                ) ,
+                majorTickLines: const MajorTickLines(
+                  color: Colors.transparent,
+                ),
+                axisLine: const AxisLine(
+                  color: Colors.transparent,
+                ),
+                minimum: 1,
+                maximum: 12,
+                isVisible: true,
+                borderColor: Colors.transparent,
+                interval: 3,
+              ),
+              primaryYAxis: NumericAxis(
+                labelStyle: const TextStyle(color: Colors.white),
+                majorGridLines: const MajorGridLines(
+                  color: Colors.transparent,
+                ) ,
+                majorTickLines: const MajorTickLines(
+                  color: Colors.transparent,
+                ),
+                axisLine: const AxisLine(
+                  color: Colors.transparent,
+                ),           
+                minimum: 0,
+                maximum: 35,
+                isVisible: true,
+                borderColor: Colors.transparent,
+              ),
+              series: <ChartSeries<ChartData,int>>[
+                SplineAreaSeries(
+                  dataSource: data, 
+                  xValueMapper: (ChartData data,_) =>data.month,
+                  yValueMapper: (ChartData data, _) => data.temperature, 
+                  splineType: SplineType.natural,
+                  gradient: LinearGradient(
+                    colors: [
+                      const Color.fromARGB(255, 84, 147, 224), 
+                      const Color.fromARGB(255, 37, 38, 82).withAlpha(150),
+                    ] ,
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                ),
+                SplineSeries(
+                  dataSource: data, 
+                  xValueMapper: (ChartData data,_) =>data.month,
+                  yValueMapper: (ChartData data, _) => data.temperature,
+                  color: const Color.fromARGB(255, 121, 123, 245),
+                  width: 4,
+                  markerSettings: const MarkerSettings(
+                    color: Colors.white, 
+                    borderWidth: 2, 
+                    shape: DataMarkerType.circle, 
+                    isVisible: true, 
+                    borderColor: Colors.white,
+                  ),
+                ),          
+              ],
+            ),
+          ),
+
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: const Divider(
+              color: Colors.white,
+              height: 50, // set the height of the divider
+              thickness: 2, // set the thickness of the divider
+            ),
+          ),
+          Text(
+            "7-Tage",
             style: GoogleFonts.poppins(
               color:Colors.white,
               fontSize: 40,
