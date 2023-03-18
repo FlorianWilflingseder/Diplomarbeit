@@ -1,5 +1,5 @@
 {
-    "idf.portWin": "COM5",
+    "idf.portWin": "COM4",
     "idf.flashType": "UART",
     "files.associations": {
         "param.h": "c",
@@ -8,7 +8,9 @@
         "alarm.h": "c",
         "common.h": "c",
         "stdio.h": "c",
-        "ws.h": "c"
+        "ws.h": "c",
+        "sensor.h": "c",
+        "sensors.h": "c"
     },
     "idf.adapterTargetName": "esp32"
 }

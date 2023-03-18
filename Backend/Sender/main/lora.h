@@ -10,7 +10,6 @@
 
 #include <stdint.h>
 
-
 // https://github.com/Inteform/esp32-lora-library
 
 void lora_reset(void);

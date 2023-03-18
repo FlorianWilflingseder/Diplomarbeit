@@ -1,7 +1,7 @@
 #include <EEPROM.h> // to store last calibration value (blanco, Vclear)
 #include <Wire.h> // for LCD display (with I2S interphase)
-#include <LiquidCrystal_I2C.h>
-LiquidCrystal_I2C lcd(0x3F,2,1,0,4,5,6,7,3, POSITIVE);
+//#include <LiquidCrystal_I2C.h>
+//LiquidCrystal_I2C lcd(0x3F,2,1,0,4,5,6,7,3, POSITIVE);
 
 int sensor = 0; // variable for averaging
 int n = 25; // number of samples to average
@@ -21,13 +21,13 @@ Serial.begin(115200);
 pinMode(buttoncalib, INPUT_PULLUP); //initializes digital pin 2 as an input with pull-up resistance.
 
 // LCD display
-lcd.begin (16,2);
-lcd.clear();
-lcd.setCursor(0,0);
-lcd.print(“Turbidity Sensor”);
+//lcd.begin (16,2);
+//lcd.clear();
+//lcd.setCursor(0,0);
+//lcd.print(“Turbidity Sensor”);
 
 //Serial display
-Serial.println(“Hi… welcome to your turbidity sensor”);
+//Serial.println(“Hi… welcome to your turbidity sensor”);
 
 EEPROM.get(0, Vclear); // recovers the last Vclear calibration value stored in ROM.
 delay(3000); // Pause for 3 sec
@@ -40,7 +40,7 @@ pushcalib = digitalRead(2); // push button status
 if (pushcalib == HIGH) {
 // If the push button is not pushed, do the normal sensing routine:
 for (int i=0; i < n; i++){
-sensor += analogRead(A1); // read the input on analog pin 1 (turbidity sensor analog output)
+sensor += analogRead(A6); // read the input on analog pin 1 (turbidity sensor analog output)
 delay(10);
 }
 sensorValue = sensor / n; // average the n values
@@ -48,26 +48,26 @@ voltage = sensorValue * (5.000 / 1023.000); // Convert analog (0-1023) to voltag
 
 turbidity = 100.00 - (voltage / Vclear) * 100.00; // as relative percentage; 0% = clear water;
 
-EEPROM.put(0, Vclear); // guarda el voltaje de calibración actualmente en uso.
+EEPROM.put(0, Vclear); 
 
 // Serial display
 Serial.print(sensorValue);
-Serial.print(", “);
+Serial.print(", ");
 Serial.print(voltage,3);
-Serial.print(”, “);
+Serial.print(", ");
 Serial.print(turbidity,3);
-Serial.print(”, ");
+Serial.print(", ");
 Serial.println(Vclear,3);
 
 // Display LCD
-lcd.clear();
-lcd.setCursor(0,0);
-lcd.print(“Volts=”);
-lcd.print(voltage,2);
-lcd.setCursor(0,1);
-lcd.print(“Turbidity=”);
-lcd.print(turbidity,2);
-lcd.print("%");
+//lcd.clear();
+//lcd.setCursor(0,0);
+//lcd.print(“Volts=”);
+//lcd.print(voltage,2);
+//lcd.setCursor(0,1);
+//lcd.print(“Turbidity=”);
+//lcd.print(turbidity,2);
+//lcd.print("%");
 
 sensor = 0; // resets for averaging
 
@@ -75,11 +75,11 @@ sensor = 0; // resets for averaging
 
 // Calibration routine, when push button is pushed:
 
-Serial.println(“Put the sensor in clear water to calibrate…”);
-lcd.clear();
-lcd.setCursor(0,0);
-lcd.print(“Calibrating…”);
-delay(2000);
+//Serial.println(“Put the sensor in clear water to calibrate…”);
+//lcd.clear();
+//lcd.setCursor(0,0);
+//lcd.print(“Calibrating…”);
+//delay(2000);
 
 for (int i=0; i < n; i++){
 sensor += analogRead(A1); // read the input on analog pin 1:
@@ -90,7 +90,7 @@ Vclear = sensorValue * (5.000 / 1023.000); // Converts analog (0-1023) to voltag
 sensor = 0;
 EEPROM.put(0, Vclear); // stores Vclear in ROM
 delay(1000);
-lcd.clear();
+//lcd.clear();
 }
 delay(1000); // Pause for 1 seconds. // sampling rate
 }

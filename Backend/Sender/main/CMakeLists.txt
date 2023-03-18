@@ -1,6 +1,4 @@
 idf_component_register(
-    SRCS "lora.c" "main.c"
+    SRCS "onewire_bus_rmt.c" "onewire_bus.c" "ds18b20.c" "main.c"
     INCLUDE_DIRS "."
 )
-
-#"ph_sensor.c" "wifi.c" "lora.c" "main.c"

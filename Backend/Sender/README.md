@@ -59,3 +59,76 @@ I (66460) example: Request headers lost
 
 ## Troubleshooting
 * If the server log shows "httpd_parse: parse_block: request URI/header too long", especially when handling POST requests, then you probably need to increase HTTPD_MAX_REQ_HDR_LEN, which you can find in the project configuration menu (`idf.py menuconfig`): Component config -> HTTP Server -> Max HTTP Request Header Length
+
+/*
+ * REORDER FROM LARGEST TO SMALLEST TO REDUCE INITIAL SLOP !
+ *
+ * LARGEST                      ->                      SMALLEST
+ * +-----------------------+-------------------+---------------+
+ * | Temperature    0 - 63 | NTU        0 - 31 | PH     0 - 15 |
+ * +-----------------------+-------------------+---------------|
+ * | 1 | 0 | 1 | 0 | 0 | 0 | 1 | 0 | 1 | 0 | 0 | 1 | 1 | 1 | 0 | <-> 40;20;14
+ * +-----------------------+---------------+-------------------+
+ * | 0   1   2   3   4   5   6   7   8   9   0   1   2   3   4 | -> 15 bits
+ * +-----------------------+---------------+-------------------+
+ * |           a           |         b         |       c       |
+ * +-----------------------+---------------+-------------------+
+ * |              1              |              2              | -> 02 bytes
+ * +-----------------------------------------------------------+
+ *
+ * 0 <= a <= 40 < 41
+ * 0 <= b <= 14 < 15
+ * 0 <= c <= 20 < 21
+ * 
+ * PACK:
+ * o = c
+ * o *= 21
+ * o += b
+ * o *= 41	
+ * o += a
+ *
+ * UNPACK:
+ * a = o % 41
+ * o /= 41
+ * b = o % 21
+ * o /= 21
+ * c = o
+ *
+ * a=40,b=20,c=14
+ *
+ * pack(a, b, c) = 12914
+ * +-------------------------------------------------------+
+ * | 1 | 1 | 0 | 0 | 1 | 0 | 0 | 1 | 1 | 1 | 0 | 0 | 1 | 0 | -> 14 (!) bits
+ * +-------------------------------------------------------+ -> 12.5% decrease in size
+ *
+ * a = 12914 % 41 = 40
+ * o /= 41
+ * b = 314 % 21 = 20
+ * o /= 21
+ * c = 14
+ */
+
+ uint8_t buf[32];
+
+void task_rx(void *p)
+{
+   int x;
+   for(;;) {
+      lora_receive();
+      while(lora_received()) {
+         x = lora_receive_packet(buf, sizeof(buf));
+         buf[x] = 0;
+         printf("Received: %s\n", buf);
+         lora_receive();
+      }
+      vTaskDelay(pdMS_TO_TICKS(1000));
+   }
+}
+
+void app_main()
+{
+   lora_init();
+   lora_set_frequency(915e6);
+   lora_enable_crc();
+   xTaskCreate(&task_rx, "task_rx", 2048, NULL, 5, NULL);
+}
