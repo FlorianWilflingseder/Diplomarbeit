@@ -1,18 +1,20 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'chart_data.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 
-
 class TemperatureData {
   final String day;
   final String month;
-  final double temperature;
-  TemperatureData(this.day,this.month, this.temperature);
+  final int temperature;
+
+  TemperatureData(this.day, this.month, this.temperature);
 }
+
 
 class TemperaturStats extends StatefulWidget {
   TemperaturStats({
@@ -25,7 +27,13 @@ class TemperaturStats extends StatefulWidget {
 class _TemperaturStatsState extends State<TemperaturStats> {
   late List<ChartData> data;
   
-  
+
+
+Future<String> getJsonFromAssets() async {
+  return await rootBundle.loadString('assets/temperature.json');
+}
+
+
 final List<charts.Series<TemperatureData, String>> dataTemp = [
   charts.Series<TemperatureData, String>(
     id: 'temperature',
