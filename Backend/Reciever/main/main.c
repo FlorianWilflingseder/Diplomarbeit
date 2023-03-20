@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdio.h>
 #include <esp_wifi.h>
 #include <esp_event.h>
 #include <esp_log.h>
@@ -10,10 +11,12 @@
 #include "esp_tls_crypto.h"
 #include <esp_http_server.h>
 
+#include "esp_spiffs.h"
+
 #include "wifi.h"
 #include "lora.h"
 
-static const char *TAG = "sender";
+static const char *TAG = "receiver";
 
 /* [********************************] STATUS [********************************] */
 static esp_err_t
@@ -40,10 +43,18 @@ get_status_handler(httpd_req_t *req)
 
     // const char* resp_str = (const char*) req->user_ctx;
 
-    char output[50];
-    snprintf(output, 50, "%f", 7.127);
+    FILE *fp = fopen("/spiffs/db", "r");
+    char *buffer;
+    long length;
+    fseek(fp, 0, SEEK_END);
+    length = ftell(fp);
+    fseek(fp, 0, SEEK_SET);
+    buffer = malloc (length + 1);
+    fread(buffer, 1, length, fp);
+    buffer[length] = '\0';
+    fclose(fp);
 
-    httpd_resp_send(req, output, HTTPD_RESP_USE_STRLEN);
+    httpd_resp_send(req, buffer, HTTPD_RESP_USE_STRLEN);
 
     /* After sending the HTTP response the old HTTP request
      * headers are lost. Check if HTTP request headers can be read now. */
@@ -115,7 +126,7 @@ http_404_error_handler(httpd_req_t *req, httpd_err_code_t err)
       httpd_resp_send_err(req, HTTPD_404_NOT_FOUND, "/api/status URI is not available");
       /* Return ESP_OK to keep underlying socket open */
       return ESP_OK;
-   } else if (strcmp("/ws", req->uri) == 0)　{
+   } else if (strcmp("/ws", req->uri) == 0) {
       httpd_resp_send_err(req, HTTPD_404_NOT_FOUND, "/ws URI is not available");
       return ESP_FAIL;
    }
@@ -182,6 +193,12 @@ task_rx(void *p)
 {
     httpd_handle_t *serv = (httpd_handle_t *) p;
 
+    FILE *fp = fopen("/spiffs/db", "w+");
+    if (fp == NULL){
+        printf("error opening file\n");
+        return;
+    }
+
     int x;
     for (;;) {
         lora_receive();
@@ -191,6 +208,9 @@ task_rx(void *p)
             buf[x] = 0;
 
             printf("rec: %s\n", buf);
+
+            // timestamp;ph;ntu;temp
+            fprintf(fp, "%s\n", (char*)buf);
 
             size_t clients = max_clients;
             int client_fds[max_clients];
@@ -243,5 +263,87 @@ app_main(void)
     lora_set_frequency(915e6);
     lora_enable_crc();
 
-    xTaskCreate(&task_rx, "task_rx", 2048, (void *) &server, 5, NULL);
+    ESP_LOGI(TAG, "Initializing SPIFFS");
+
+    esp_vfs_spiffs_conf_t conf = {
+      .base_path = "/spiffs",
+      .partition_label = NULL,
+      .max_files = 5,
+      .format_if_mount_failed = false
+    };
+
+    // Use settings defined above to initialize and mount SPIFFS filesystem.
+    // Note: esp_vfs_spiffs_register is an all-in-one convenience function.
+    esp_err_t ret = esp_vfs_spiffs_register(&conf);
+
+    if (ret != ESP_OK) {
+        if (ret == ESP_FAIL) {
+            ESP_LOGE(TAG, "Failed to mount or format filesystem");
+        } else if (ret == ESP_ERR_NOT_FOUND) {
+            ESP_LOGE(TAG, "Failed to find SPIFFS partition");
+        } else {
+            ESP_LOGE(TAG, "Failed to initialize SPIFFS (%s)", esp_err_to_name(ret));
+        }
+        return;
+    }
+
+    size_t total = 0, used = 0;
+    ret = esp_spiffs_info(NULL, &total, &used);
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG, "Failed to get SPIFFS partition information (%s)", esp_err_to_name(ret));
+    } else {
+        ESP_LOGI(TAG, "Partition size: total: %d, used: %d", total, used);
+    }
+
+    // xTaskCreate(&task_rx, "task_rx", 2048, (void *) &server, 5, NULL);
+    FILE *fp = fopen("/spiffs/db", "a+");
+    if (fp == NULL){
+        printf("error opening file\n");
+        return;
+    }
+
+    int x;
+    for (;;) {
+        lora_receive();
+
+        while (lora_received()) {
+            x = lora_receive_packet(buf, sizeof(buf));
+            buf[x] = 0;
+
+            printf("rec: %s\n", buf);
+
+            // timestamp;ph;ntu;temp
+
+            fprintf(fp, "%s\n", (char*)buf);
+            fflush(fp);
+
+            size_t clients = max_clients;
+            int client_fds[max_clients];
+            
+            if (httpd_get_client_list(server, &clients, client_fds) == ESP_OK) {
+                for (size_t i = 0; i < clients; ++i) {
+                    int sock = client_fds[i];
+
+                    if (httpd_ws_get_fd_info(server, sock) == HTTPD_WS_CLIENT_WEBSOCKET) {
+                        ESP_LOGI(TAG, "Active client (fd=%d) -> sending async message", sock);
+                        
+                        struct async_resp_arg *resp_arg = malloc(sizeof(struct async_resp_arg));
+                        resp_arg->hd = server;
+                        resp_arg->fd = sock;
+                        resp_arg->buf = (char*)buf;
+                        
+                        if (httpd_queue_work(resp_arg->hd, send_data, resp_arg) != ESP_OK) {
+                            ESP_LOGE(TAG, "httpd_queue_work failed!");
+                            break;
+                        }
+                    }
+                }
+            } else {
+                ESP_LOGE(TAG, "httpd_get_client_list failed!");
+            }
+
+            lora_receive();
+        }
+        vTaskDelay(pdMS_TO_TICKS(1000));
+    }
 }
