@@ -10,7 +10,10 @@
         "stdio.h": "c",
         "ws.h": "c",
         "sensor.h": "c",
-        "sensors.h": "c"
+        "sensors.h": "c",
+        "lora.h": "c",
+        "time.h": "c",
+        "stdlib.h": "c"
     },
     "idf.adapterTargetName": "esp32"
 }

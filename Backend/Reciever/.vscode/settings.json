@@ -1,0 +1,20 @@
+{
+    "idf.portWin": "COM5",
+    "idf.flashType": "UART",
+    "files.associations": {
+        "param.h": "c",
+        "string.h": "c",
+        "wifi.h": "c",
+        "alarm.h": "c",
+        "common.h": "c",
+        "stdio.h": "c",
+        "ws.h": "c",
+        "sensor.h": "c",
+        "sensors.h": "c",
+        "lora.h": "c",
+        "time.h": "c",
+        "stdlib.h": "c",
+        "sqlite3.h": "c"
+    },
+    "idf.adapterTargetName": "esp32"
+}
