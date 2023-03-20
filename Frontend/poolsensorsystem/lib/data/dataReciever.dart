@@ -7,7 +7,7 @@ class Data {
 
   factory Data.fromJson(Map<String, dynamic> parsedjson) {
     return Data(
-      parsedjson['date'],
+      parsedjson['date'], // Convert EPOCH to DateTime
       parsedjson['phValue'],
       parsedjson['ntuValue'],
       parsedjson['temperature'],
