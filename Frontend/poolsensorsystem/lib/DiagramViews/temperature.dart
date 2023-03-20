@@ -1,4 +1,3 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -49,6 +48,7 @@ final List<charts.Series<TemperatureData, String>> dataTemp = [
     domainFn: (TemperatureData temp, _) => temp.day,
     measureFn: (TemperatureData temp, _) => temp.temperature,
     colorFn: (_, __) => charts.Color.fromHex(code:'#5493e0AF'),
+    labelAccessorFn: (TemperatureData temp,_) => temp.temperature.toString(),
   ),
 ];
 
@@ -77,18 +77,7 @@ Widget build(BuildContext context) {
     appBar: AppBar(
       backgroundColor: const Color.fromARGB(255, 37, 38, 82),
       elevation: 0.0,
-      centerTitle: false, 
-      actions: [
-        Padding(
-            padding: const EdgeInsets.only(right: 5), // Adjust the left padding
-            child: IconButton(
-              onPressed: () {
-                
-              },
-              icon: const Icon(Icons.info, size: 40, color: Colors.white,),
-            ),
-          ),
-      ],
+      centerTitle: true, 
       title: Text(
         "Temperatur Diagramme",
           style: GoogleFonts.poppins(
