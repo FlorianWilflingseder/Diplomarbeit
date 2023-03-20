@@ -77,7 +77,7 @@ Widget build(BuildContext context) {
                   MaterialPageRoute(builder: (context) => NtuInfo()),
                 );
               },
-              icon: const Icon(Icons.info, size: 40, color: Colors.white,),
+              icon: const Icon(Icons.info, size: 35, color: Colors.white,),
             ),
           ),
       ], 

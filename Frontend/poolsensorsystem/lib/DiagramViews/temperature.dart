@@ -158,6 +158,14 @@ Widget build(BuildContext context) {
                   dataSource: data, 
                   xValueMapper: (ChartData data,_) =>data.month,
                   yValueMapper: (ChartData data, _) => data.temperature,
+                  dataLabelSettings: const DataLabelSettings(
+                    isVisible: true,
+                    labelPosition: ChartDataLabelPosition.outside,
+                    textStyle: TextStyle(
+                      color: Colors.white
+                      
+                    ),
+                  ),
                   color: const Color.fromARGB(255, 121, 123, 245),
                   width: 4,
                   markerSettings: const MarkerSettings(
