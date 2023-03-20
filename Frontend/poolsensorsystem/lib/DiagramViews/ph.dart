@@ -44,6 +44,7 @@ final List<charts.Series<PhData, String>> dataPh = [
     domainFn: (PhData temp, _) => temp.day,
     measureFn: (PhData temp, _) => temp.phvalue,
     colorFn: (_, __) => charts.Color.fromHex(code:'#5493e0AF'),
+    labelAccessorFn: (PhData temp , _) => temp.phvalue.toString(),
   ),
 ];
 
