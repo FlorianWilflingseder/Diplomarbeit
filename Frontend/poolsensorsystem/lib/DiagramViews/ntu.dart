@@ -40,6 +40,7 @@ class _NTUStatsState extends State<NTUStats> {
     domainFn: (NtuData temp, _) => temp.day,
     measureFn: (NtuData temp, _) => temp.ntu,
     colorFn: (_, __) => charts.Color.fromHex(code:'#5493e0AF'),
+    labelAccessorFn: (NtuData temp, _) => temp.ntu.toString(),
   ),
 ];
   @override initState() {
@@ -345,7 +346,7 @@ Widget build(BuildContext context) {
             ),
           ),
           Text(
-            "1 Jahr",
+            "3 Monate",
             style: GoogleFonts.poppins(
               color:Colors.white,
               fontSize: 40,

@@ -350,7 +350,7 @@ Widget build(BuildContext context) {
             ),
           ),
           Text(
-            "1 Jahr",
+            "3 Monate",
             style: GoogleFonts.poppins(
               color:Colors.white,
               fontSize: 40,
