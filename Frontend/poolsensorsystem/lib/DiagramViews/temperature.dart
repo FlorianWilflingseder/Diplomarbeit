@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/dataReciever.dart';
@@ -40,22 +41,28 @@ String getDayAsString(DateTime time) {
 // date.month == 2
 // date.month == 1
 Future<List<Data>> fetchSensorValues() async {
-  final response =
-      await http.get(Uri.parse("http://XXX.XXX.X.X/api/status?d="));
+  final response = await http.get(Uri.parse("http://192.168.1.4/api/status"));
 
   if (response.statusCode == 200) {
     List<Data> values = [];
     List<String> lines = response.body.split('\n');
-
+    initializeDateFormatting('de_DE', null);
+    int epochtime = 1679440224;
+    int realLines = 0;
     for (String line in lines) {
-      List<String> data = line.split(';');
+      epochtime = epochtime + 86400; //!!!!!
+      List<String> data = ("$epochtime;$line")
+          .split(';'); //manuelles DATE backend hat kein timestamp!!!!!!!!!!!!
+      if (data.length != 4) continue;
       DateTime time =
           DateTime.fromMillisecondsSinceEpoch(int.parse(data[0]) * 1000);
       double ntu = double.parse(data[1]);
       double ph = double.parse(data[2]);
       double temp = double.parse(data[3]);
-
       values.add(Data(time, ntu, ph, temp));
+      if (values.length == 7) {
+        return values;
+      }
     }
     return values;
   } else {
@@ -71,21 +78,6 @@ class TemperaturStats extends StatefulWidget {
   State<TemperaturStats> createState() => _TemperaturStatsState();
 }
 
-void loadList() async {
-  List<charts.Series<TemperatureData, String>> dataTemp = [];
-  List<TemperatureData> data = (await fetchSensorValues())
-      .map((e) => TemperatureData(getDayAsString(e.date), e.temperature))
-      .toList();
-  dataTemp.add(charts.Series<TemperatureData, String>(
-    id: 'temperature',
-    data: data,
-    domainFn: (TemperatureData temp, _) => temp.day,
-    measureFn: (TemperatureData temp, _) => temp.temperature,
-    colorFn: (_, __) => charts.Color.fromHex(code: '#5493e0AF'),
-    labelAccessorFn: (TemperatureData temp, _) => temp.temperature.toString(),
-  ));
-}
-
 class _TemperaturStatsState extends State<TemperaturStats> {
   List<TemperatureData> data = [];
   List<charts.Series<TemperatureData, String>> dataTemp = [];
@@ -93,7 +85,22 @@ class _TemperaturStatsState extends State<TemperaturStats> {
   @override
   initState() {
     super.initState();
-    loadList();
+    fetchSensorValues().then((result) {
+      setState(() {
+        data = result
+            .map((e) => TemperatureData(getDayAsString(e.date), e.temperature))
+            .toList();
+        dataTemp.add(charts.Series<TemperatureData, String>(
+          id: 'temperature',
+          data: data,
+          domainFn: (TemperatureData temp, _) => temp.day,
+          measureFn: (TemperatureData temp, _) => temp.temperature,
+          colorFn: (_, __) => charts.Color.fromHex(code: '#5493e0AF'),
+          labelAccessorFn: (TemperatureData temp, _) =>
+              temp.temperature.toString(),
+        ));
+      });
+    });
   }
 
   @override
@@ -132,7 +139,7 @@ class _TemperaturStatsState extends State<TemperaturStats> {
                 borderWidth: 0,
                 borderColor: Colors.transparent,
                 plotAreaBorderWidth: 0,
-                primaryXAxis: NumericAxis(
+                primaryXAxis: CategoryAxis(
                   labelStyle: const TextStyle(color: Colors.white),
                   majorGridLines: const MajorGridLines(
                     color: Colors.transparent,
@@ -143,11 +150,9 @@ class _TemperaturStatsState extends State<TemperaturStats> {
                   axisLine: const AxisLine(
                     color: Colors.transparent,
                   ),
-                  minimum: 1,
-                  maximum: 12,
                   isVisible: true,
                   borderColor: Colors.transparent,
-                  interval: 3,
+                  interval: 1,
                 ),
                 primaryYAxis: NumericAxis(
                   labelStyle: const TextStyle(color: Colors.white),
@@ -296,7 +301,7 @@ class _TemperaturStatsState extends State<TemperaturStats> {
                 borderWidth: 0,
                 borderColor: Colors.transparent,
                 plotAreaBorderWidth: 0,
-                primaryXAxis: NumericAxis(
+                primaryXAxis: CategoryAxis(
                   labelStyle: const TextStyle(color: Colors.white),
                   majorGridLines: const MajorGridLines(
                     color: Colors.transparent,
@@ -307,8 +312,6 @@ class _TemperaturStatsState extends State<TemperaturStats> {
                   axisLine: const AxisLine(
                     color: Colors.transparent,
                   ),
-                  minimum: 1,
-                  maximum: 12,
                   isVisible: true,
                   borderColor: Colors.transparent,
                   interval: 3,
@@ -386,7 +389,7 @@ class _TemperaturStatsState extends State<TemperaturStats> {
                 borderWidth: 0,
                 borderColor: Colors.transparent,
                 plotAreaBorderWidth: 0,
-                primaryXAxis: NumericAxis(
+                primaryXAxis: CategoryAxis(
                   labelStyle: const TextStyle(color: Colors.white),
                   majorGridLines: const MajorGridLines(
                     color: Colors.transparent,
@@ -397,8 +400,6 @@ class _TemperaturStatsState extends State<TemperaturStats> {
                   axisLine: const AxisLine(
                     color: Colors.transparent,
                   ),
-                  minimum: 1,
-                  maximum: 12,
                   isVisible: true,
                   borderColor: Colors.transparent,
                   interval: 3,
