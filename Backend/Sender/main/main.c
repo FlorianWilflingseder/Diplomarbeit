@@ -13,5 +13,7 @@ app_main()
    lora_set_frequency(915e6);
    lora_enable_crc();
 
+   init_sensors();
+
    xTaskCreate(&sensors_task, "sensors_task", 2048, NULL, 5, NULL);
 }

@@ -1,5 +1,7 @@
+// (c) emil kraft
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <esp_wifi.h>
 #include <esp_event.h>
 #include <esp_log.h>
@@ -17,6 +19,7 @@
 #include "lora.h"
 
 static const char *TAG = "receiver";
+#define EXAMPLE_HTTP_QUERY_KEY_MAX_LEN  (64)
 
 /* [********************************] STATUS [********************************] */
 static esp_err_t
@@ -39,6 +42,24 @@ get_status_handler(httpd_req_t *req)
         free(buf);
     }
 
+    long ts = -1;
+    buf_len = httpd_req_get_url_query_len(req) + 1;
+    if (buf_len > 1) {
+        buf = malloc(buf_len);
+        if (httpd_req_get_url_query_str(req, buf, buf_len) == ESP_OK) {
+            ESP_LOGI(TAG, "Found URL query => %s", buf);
+            char param[EXAMPLE_HTTP_QUERY_KEY_MAX_LEN], dec_param[EXAMPLE_HTTP_QUERY_KEY_MAX_LEN] = {0};
+
+            // /api/status?ts=17381727
+            if (httpd_query_key_value(buf, "ts", param, sizeof(param)) == ESP_OK) {
+                ESP_LOGI(TAG, "Found URL query parameter => ts=%s", param);
+                ts = strtol(param, NULL, 10);
+                //example_uri_decode(dec_param, param, strnlen(param, EXAMPLE_HTTP_QUERY_KEY_MAX_LEN));
+                //ESP_LOGI(TAG, "Decoded query parameter => %s", dec_param);
+            }
+        }
+    }
+
     httpd_resp_set_hdr(req, "Content-Type", "application/json");
 
     // const char* resp_str = (const char*) req->user_ctx;
@@ -53,6 +74,15 @@ get_status_handler(httpd_req_t *req)
     fread(buffer, 1, length, fp);
     buffer[length] = '\0';
     fclose(fp);
+
+    char *token;
+    char *line;
+    for (int i = 0; i < length; ++i) {
+        line = buffer[i];
+        while ((token = strsep(&line, ";"))) {
+            ESP_LOGI(TAG, "token, %s", token);
+        }
+    }
 
     httpd_resp_send(req, buffer, HTTPD_RESP_USE_STRLEN);
 
@@ -86,9 +116,6 @@ ws_handler(httpd_req_t *req)
 {
     if (req->method == HTTP_GET) {
         ESP_LOGI(TAG, "Handshake done, the new connection was opened");
-
-        // QoL: SEND LATEST DATA TO CLIENT
-
         return ESP_OK;
     }
 
@@ -243,6 +270,7 @@ task_rx(void *p)
     }
 }
 
+// (c) emil kraft
 void
 app_main(void)
 {
