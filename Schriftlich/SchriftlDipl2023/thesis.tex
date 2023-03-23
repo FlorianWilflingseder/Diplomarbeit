@@ -14,7 +14,7 @@
 \displaywidowpenalty=10000
 \interfootnotelinepenalty=10000
 
-\title{SPA TemperaturSensor}
+\title{SPA-Temperatur}
 \author{Florian Wilflingseder}
 
 \makeindex
@@ -56,13 +56,22 @@
 
 
 \begin{spacing}{1}
-\chapter{Technologien}
+\chapter{Technologien|Hardware}
 \end{spacing}
-\input{./sections/technologien}
+\input{./sections/hardware.tex}
 \newpage
 
+\begin{spacing}{1}
+\chapter{Technologien|Software}
+\end{spacing}
+\input{./sections/software.tex}
+\newpage
+
+
+\newpage
 \pagenumbering{Roman}
 \setcounter{page}{\value{RPages}}
+\input{glossary}
 %\setlength{\glsdescwidth}{0.8\linewidth}
 \glsnogroupskiptrue
 \printglossary[title=Glossar,toctitle=Glossar] %,style=long]
