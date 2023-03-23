@@ -1,4 +1,3 @@
-// (c) emil kraft
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,11 +11,16 @@
 #include "esp_eth.h"
 #include "esp_tls_crypto.h"
 #include <esp_http_server.h>
-
 #include "esp_spiffs.h"
-
 #include "wifi.h"
 #include "lora.h"
+#include <time.h>
+#include <sys/time.h>
+#include "esp_attr.h"
+#include "esp_sleep.h"
+#include "lwip/ip_addr.h"
+#include "esp_sntp.h"
+#include "esp_netif.h"
 
 static const char *TAG = "receiver";
 #define EXAMPLE_HTTP_QUERY_KEY_MAX_LEN  (64)
@@ -44,25 +48,23 @@ get_status_handler(httpd_req_t *req)
 
     long ts = -1;
     buf_len = httpd_req_get_url_query_len(req) + 1;
+    char param[EXAMPLE_HTTP_QUERY_KEY_MAX_LEN];
     if (buf_len > 1) {
         buf = malloc(buf_len);
         if (httpd_req_get_url_query_str(req, buf, buf_len) == ESP_OK) {
             ESP_LOGI(TAG, "Found URL query => %s", buf);
-            char param[EXAMPLE_HTTP_QUERY_KEY_MAX_LEN], dec_param[EXAMPLE_HTTP_QUERY_KEY_MAX_LEN] = {0};
 
             // /api/status?ts=17381727
             if (httpd_query_key_value(buf, "ts", param, sizeof(param)) == ESP_OK) {
                 ESP_LOGI(TAG, "Found URL query parameter => ts=%s", param);
                 ts = strtol(param, NULL, 10);
-                //example_uri_decode(dec_param, param, strnlen(param, EXAMPLE_HTTP_QUERY_KEY_MAX_LEN));
+                //example_uri_decode(dec    _param, param, strnlen(param, EXAMPLE_HTTP_QUERY_KEY_MAX_LEN));
                 //ESP_LOGI(TAG, "Decoded query parameter => %s", dec_param);
             }
         }
     }
 
     httpd_resp_set_hdr(req, "Content-Type", "application/json");
-
-    // const char* resp_str = (const char*) req->user_ctx;
 
     FILE *fp = fopen("/spiffs/db", "r");
     char *buffer;
@@ -74,15 +76,6 @@ get_status_handler(httpd_req_t *req)
     fread(buffer, 1, length, fp);
     buffer[length] = '\0';
     fclose(fp);
-
-    char *token;
-    char *line;
-    for (int i = 0; i < length; ++i) {
-        line = buffer[i];
-        while ((token = strsep(&line, ";"))) {
-            ESP_LOGI(TAG, "token, %s", token);
-        }
-    }
 
     httpd_resp_send(req, buffer, HTTPD_RESP_USE_STRLEN);
 
@@ -213,7 +206,7 @@ connect_handler(void *arg, esp_event_base_t event_base, int32_t event_id, void *
    }
 }
 
-uint8_t buf[32];
+uint8_t buf[128];
 
 void
 task_rx(void *p)
@@ -270,15 +263,55 @@ task_rx(void *p)
     }
 }
 
-// (c) emil kraft
+void prepend(char* s, const char* t)
+{
+    size_t len = strlen(t);
+    memmove(s + len, s, strlen(s) + 1);
+    memcpy(s, t, len);
+}
+
+/*
+static void obtain_time(void)
+{
+    ESP_ERROR_CHECK( nvs_flash_init() );
+    ESP_ERROR_CHECK(esp_netif_init());
+    ESP_ERROR_CHECK( esp_event_loop_create_default() );
+
+    init_wifi();
+
+    ESP_LOGI(TAG, "Initializing SNTP");
+    esp_sntp_config_t config = ESP_NETIF_SNTP_DEFAULT_CONFIG(CONFIG_SNTP_TIME_SERVER);
+    config.start = false;                       // start SNTP service explicitly (after connecting)
+    config.server_from_dhcp = true;             // accept NTP offers from DHCP server, if any (need to enable *before* connecting)
+    config.renew_servers_after_new_IP = true;   // let esp-netif update configured SNTP server(s) after receiving DHCP lease
+    config.index_of_first_server = 1;           // updates from server num 1, leaving server 0 (from DHCP) intact
+    config.ip_event_to_renew = IP_EVENT_STA_GOT_IP;
+    esp_netif_sntp_init(&config);
+
+    // wait for time to be set
+    time_t now = 0;
+    struct tm timeinfo = { 0 };
+    int retry = 0;
+    const int retry_count = 15;
+    while (esp_netif_sntp_sync_wait(2000 / portTICK_PERIOD_MS) == ESP_ERR_TIMEOUT && ++retry < retry_count) {
+        ESP_LOGI(TAG, "Waiting for system time to be set... (%d/%d)", retry, retry_count);
+    }
+    time(&now);
+    localtime_r(&now, &timeinfo);
+
+    ESP_ERROR_CHECK( example_disconnect() );
+    esp_netif_sntp_deinit();
+}
+*/
+
 void
 app_main(void)
 {
     static httpd_handle_t server = NULL;
 
-    ESP_ERROR_CHECK(nvs_flash_init());
+    ESP_ERROR_CHECK( nvs_flash_init() );
     ESP_ERROR_CHECK(esp_netif_init());
-    ESP_ERROR_CHECK(esp_event_loop_create_default());
+    ESP_ERROR_CHECK( esp_event_loop_create_default() );
 
     init_wifi();
 
@@ -331,18 +364,26 @@ app_main(void)
     }
 
     int x;
+    long asd = 1679601506;
     for (;;) {
         lora_receive();
 
+        // CURRENT_EPOCH - TIMESTAMP
+        // 0, 1, 2, 3, ....
         while (lora_received()) {
             x = lora_receive_packet(buf, sizeof(buf));
             buf[x] = 0;
+            char *newB = (char*)buf;
+            char str[256];
+            sprintf(str, "%lld;", asd + time(0));
 
-            printf("rec: %s\n", buf);
+            prepend(newB, str);
+
+            printf("rec: %s\n", newB);
 
             // timestamp;ph;ntu;temp
 
-            fprintf(fp, "%s\n", (char*)buf);
+            fprintf(fp, "%s\n", newB);
             fflush(fp);
 
             size_t clients = max_clients;
