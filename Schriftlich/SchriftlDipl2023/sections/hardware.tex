@@ -12,6 +12,12 @@ Eine weitere Stärke des TTGO-Lora-Funk-ESP32 ist seine Energieeffizienz. Der ES
 Ein weiterer Vorteil des TTGO-Lora-Funk-ESP32 ist seine Unterstützung durch eine aktive Community von Entwicklern. Es gibt eine Vielzahl von Foren und Online-Communities, die sich auf die Entwicklung von Anwendungen mit dem TTGO-Lora-Funk-ESP32 spezialisiert haben. Dies macht es einfacher, Unterstützung und Hilfe zu finden, wenn man bei der Entwicklung von Anwendungen auf Probleme stößt.
 Da der TTGO-Lora-Funk-ESP32 ein leistungsstarker und vielseitiger Mikrocontroller ist, der für die drahtlose Datenübertragung entwickelt wurde eine hohe Rechenleistung besitzt, dazu aber noch kosten- und energieeffizient ist, fiel die Entscheidung bei dieser Arbeit auf ihn.
 
+\begin{figure}[b]
+    \centering
+    \includegraphics[width=0.5\textwidth]{./pics/ttgoLoraOled.jpg}
+    \caption{ESP32-TTGO-LoRa-Oled}
+    \label{fig:TTGO-ESP32}
+  \end{figure}
 
 \newpage
 \section{ESP32-Chip:}
@@ -60,6 +66,8 @@ Dadurch wird eine zuverlässige Übertragung von Daten über große Entfernungen
 Das LoRa-Funk-Modul ist auch sehr einfach zu integrieren. Es ist kompatibel mit einer Vielzahl von Mikrocontrollern und kann über verschiedene Schnittstellen wie UART oder SPI angeschlossen werden. 
 Darüber hinaus gibt es eine Vielzahl von Bibliotheken und Entwicklertools, die von der Community entwickelt wurden, um die Integration mit verschiedenen Plattformen und Anwendungen zu erleichtern. 
 Zusammenfassend ist das LoRa-Funk-Modul eine leistungsfähige und zuverlässige drahtlose Übertragungstechnologie, die speziell für den Einsatz in IoT-Anwendungen entwickelt wurde und deshalb perfekt für dieses Projekt geignet ist.
+
+
 \newpage
 \section{Verwendete Sensoren:}
 \subsection*{TemperaturSensor:}
@@ -72,6 +80,15 @@ Da der DS18B20 eine hohe Genauigkeit, eine schnelle Reaktionszeit, eine einfache
 \newline
 Datasheet: \url{https://cdn.shopify.com/s/files/1/1509/1638/files/DS18B20_3mCable_datasheet.pdf?v=1644320674}
 
+\begin{figure}[b]
+    \centering
+    \includegraphics[width=0.3\textwidth]{./pics/TempSensBild.jpeg}
+    \caption{TemperaturSensor}
+    \label{fig:TemperaturSensor}
+\end{figure}
+
+
+
 
 \newpage
 \subsection*{pH-Sensor:}
@@ -83,6 +100,13 @@ Der E-201-C pH-Sensor wird in einer Vielzahl von Anwendungen eingesetzt, darunte
 \newline
 Datasheet: \url{https://www.e-gizmo.net/oc/kits%20documents/PH%20Sensor%20E-201-C/PH%20Sensor%20E-201-C.pdf}
 
+\begin{figure}[b]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./pics/pHSensorBild.jpeg}
+    \caption{Ph-Sensor}
+    \label{fig:TTGO-ESP32}
+\end{figure}
+
 \newpage
 \subsection*{NTU-Sensor|Trübungs-Sensor:}
 Das TS-300B Trübungssensor-Modul ist ein Qualitäts-Trübungssensor, der zur Messung der Trübung von Flüssigkeiten verwendet wird. 
@@ -92,9 +116,17 @@ Der LED-Lichtquelle strahlt Infrarotlicht aus, das von den Verunreinigungen in d
 Dieser Trübungssensor bietet eine hohe Empfindlichkeit und Genauigkeit mit einer Messauflösung von bis zu 0,1 NTU (Nephelometric Turbidity Unit) und einer Messgenauigkeit von ±5 Prozent im Bereich von 0 bis 1000 NTU. 
 Der Sensor bietet auch eine schnelle Reaktionszeit und kann Trübungen in Echtzeit messen. Der Sensor kann über einen einfachen Analogausgang an ein Messgerät oder einen Mikrocontroller angeschlossen werden. Es ist auch einfach zu installieren und zu warten, da es keine beweglichen Teile hat und daher eine geringe Wartung erfordert. 
 Der TS-300B Trübungssensor wird in einer Vielzahl von Anwendungen eingesetzt, darunter in der Wasseraufbereitung, der Abwasserbehandlung, der Lebensmittel- und Getränkeindustrie und der Umweltüberwachung. Es ist ein wichtiger Sensor zur Messung der Wasserqualität und zur Überwachung von Prozessen, die von der Trübung der Flüssigkeit abhängen. 
-Der TS-300B Trübungssensor ist ein wichtiger Bestandteil in vielen Systemen und trägt zur Qualitätssicherung und -kontrolle bei. 
-\newline
+
+
 Datasheet: \url{https://de.aliexpress.com/item/4000321791231.html}
+
+\begin{figure}[b]
+    \centering
+    \includegraphics[width=0.4\textwidth]{./pics/ntuSensorBild.jpeg}
+    \caption{NTU-Sensor}
+    \label{fig:NTU-Sensor}
+\end{figure}
+
 
 
 \newpage
@@ -112,6 +144,12 @@ Es ist ein wichtiger Sensor zur Messung der Bewegung und Orientierung von Objekt
 \newline
 Datasheet: \url{https://joy-it.net/de/products/SEN-MPU6050} 
 
+\begin{figure}[b]
+    \centering
+    \includegraphics[width=0.4\textwidth]{./pics/BeschlSensorBild.jpeg}
+    \caption{Beschleunigungssensor}
+    \label{fig:Beschleunigungssensor}
+\end{figure}
 
 
 
