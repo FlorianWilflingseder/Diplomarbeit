@@ -1,1 +1,374 @@
-\section*{Zu Begin verwendete Software:}
+\section{Zu Beginn verwendete Software:}
+Zu Beginn der Diplomarbeit wurde für die Umsetzung der Software „React“ für das Frontend und die „Arduino IDE“ für das Backend verwendet und sich in die Software eingearbeitet. 
+Nach den ersten Versuchen die Anforderungen der Diplomarbeit in diesen Umgebungen umzusetzen, wurde klar, dass diese die nicht beste Lösung darstellen. 
+React war nicht gut genug für die Plattformübergreifende Programmierung geeignet wie gedacht. 
+„React“ wurde daraufhin durch Flutter ersetzt. 
+Bei der Arduino IDE stellte sich heraus, dass es zwar die nötigen Bibliotheken gab aber die einzelnen Pins des Mikroprozessors durch die Software nicht erkannt wurden und eine performante Datenbank, auf der die Daten gespeichert werden sehr schwer umzusetzen ist. 
+Deswegen wurde das Arduino-Framework durch das ESP32 native ESP-SDK von Espressif-Systems ersetzt da es API’s auf Hardware-Ebene beinhaltet. 
+Die optimierten vorkompilierten Bibliotheken und kompilierfertigen Treiberbibliotheken, des SDKs, verkürzen die Markt- einführungszeit und gewährleisten gleichzeitig die Freiheit der Anpassung. 
+Die Datenbank wurde mit einem File-System (Spiffs) auf dem ESP32 realisiert. Als Entwicklungs Umgebung wurde „Visual Studio Code“ verwendet.
+
+\newpage
+
+\section{Unterschied Flutter und React:}
+Flutter und React sind zwei der beliebtesten Frameworks für die Entwicklung von mobilen Anwendungen und Webanwendungen. 
+Beide Frameworks haben ihre eigenen Stärken und Schwächen und eignen sich für unterschiedliche Anwendungen. 
+Flutter ist ein mobiles App-Entwicklungs-Framework, das von Google entwickelt wurde. 
+Es basiert auf der Programmiersprache Dart und verwendet eine eigene Rendering-Engine, die auf der GPU basiert. 
+Flutter bietet eine umfangreiche Sammlung von Widgets und Tools, die Entwicklern helfen, schnell und effizient ansprechende und interaktive mobile Anwendungen zu erstellen. 
+Dazu werden seit mehreren Monaten fast wöchentlich neue Widgets und Funktionen in Flutter hinzugefügt die das App-Development vereinfachen und performanter machen. 
+React hingegen ist ein Framework für die Entwicklung von Webanwendungen, das von Facebook entwickelt wurde. Es basiert auf JavaScript und ermöglicht Entwicklern die Erstellung von ansprechenden und interaktiven \newline 
+Webanwendungen mit einer flexiblen Architektur. 
+React nutzt eine virtuelle DOM-Struktur, die es Entwicklern ermöglicht, schnelle und effiziente Anwendungen zu erstellen. 
+Ein wichtiger Unterschied zwischen Flutter und React ist die Art der Anwendungen, für die sie entwickelt wurden. 
+Flutter wurde speziell für die Entwicklung von mobilen Anwendungen entwickelt, während React in erster Linie für die Entwicklung von Webanwendungen konzipiert wurde. 
+Dies bedeutet, dass Flutter speziell auf die Bedürfnisse von mobilen Endbenutzern zugeschnitten ist und deswegen den Use-Case dieser Diplomarbeit trifft, während React auf die Bedürfnisse von Webanwendungen ausgerichtet ist.
+Ein weiterer Unterschied zwischen den beiden Frameworks ist die Art der Programmiersprache, die sie verwenden. 
+Flutter verwendet die Programmiersprache Dart, während React auf JavaScript basiert. 
+Obwohl beide Sprachen objektorientiert sind, gibt es einige Unterschiede zwischen ihnen. Dart ist eine statisch typisierte Sprache, während JavaScript eine dynamisch typisierte Sprache ist. 
+Dies bedeutet, dass Dart eine strengere Typisierung aufweist, was zu einer höheren Codequalität und -sicherheit führen kann. 
+JavaScript ist jedoch flexibler und einfacher zu erlernen.
+Ein weiterer Unterschied zwischen den beiden Frameworks ist ihre Architektur. 
+Flutter verwendet eine Widget-basierte Architektur, bei der alle UI-Elemente als Widgets dargestellt werden. 
+Dies ermöglicht es Entwicklern, schnell und einfach ansprechende Benutzeroberflächen zu erstellen. 
+React verwendet hingegen eine komponentenbasierte Architektur, bei der UI-Elemente als Komponenten dargestellt werden.
+Dies ermöglicht es Entwicklern, wiederverwendbare Komponenten zu erstellen und die Code-Organisation zu verbessern.
+Sie unterscheiden sich jedoch nicht nur in der Architektur sondern auch in der Art und Weise, wie sie mit der Plattform interagieren. 
+Flutter verwendet eine eigene Rendering-Engine, die auf der GPU basiert, um eine hohe Leistung und eine schnelle Reaktionszeit zu ermöglichen.
+React hingegen verwendet eine virtuelle DOM-Struktur, die es Entwicklern ermöglicht, Änderungen an der Benutzeroberfläche schnell zu erfassen und anzuzeigen. 
+Die virtuelle DOM besteht aus JavaScript-Objekten, die die verschiedenen HTML-Elemente, Attribute und Inhalte repräsentieren. 
+Diese virtuelle DOM-Struktur wird verwendet, um Änderungen im UI-Design zu verwalten, bevor sie auf dem tatsächlichen HTML-DOM angewendet werden. 
+Dadurch können Änderungen im UI-Design effizienter und schneller durchgeführt werden, da nur die tatsächlich geänderten Teile aktualisiert werden müssen, ohne das gesamte Dokument neu zu rendern. 
+Diese effiziente Handhabung von UI-Design-Änderungen ist eine der Stärken von React im Vergleich zu anderen JavaScript-Frameworks.
+Ein weiterer wichtiger Unterschied zwischen den beiden Frameworks ist die Verfügbarkeit von Bibliotheken und Tools. Flutter bietet eine umfangreiche Sammlung von Widgets und Tools, die speziell für die Entwicklung von mobilen Anwendungen entwickelt wurden. 
+React hingegen hat eine große und aktive Entwicklergemeinschaft, die eine Vielzahl von Bibliotheken und Tools entwickelt hat, die für die Entwicklung von Webanwendungen genutzt werden können.
+Ein weiterer wichtiger Unterschied ist die Verfügbarkeit von Plattform-Unterstützung. 
+Flutter unterstützt sowohl Android als auch iOS und bietet eine native Leistung auf beiden Plattformen. 
+React hingegen unterstützt Webanwendungen sowie mobile Anwendungen durch die Verwendung von React Native, das jedoch immer noch auf der Web-Technologie basiert.
+In Bezug auf die Entwicklungskosten und die Zeit, die für die Entwicklung benötigt wird, haben beide Frameworks ihre Vor- und Nachteile. 
+Flutter bietet eine schnellere Entwicklungszeit und eine geringere Anzahl von Fehlern, da es auf einer Widget-basierten Architektur basiert und über eine umfangreiche Sammlung von Widgets und Tools verfügt. 
+React hingegen hat eine größere Entwicklergemeinschaft und bietet eine größere Flexibilität in der Entwicklung von Webanwendungen.
+Zusammenfassend kann gesagt werden, dass Flutter und React beide starke Frameworks für die Entwicklung von mobilen Anwendungen und Webanwendungen sind. 
+Flutter ist speziell auf die Bedürfnisse von mobilen Endbenutzern zugeschnitten und verwendet eine eigene Rendering-Engine, um eine hohe Leistung zu gewährleisten. 
+React hingegen ist auf die Entwicklung von Webanwendungen ausgerichtet und nutzt eine virtuelle DOM-Struktur, um schnell auf Änderungen in der Benutzeroberfläche zu reagieren. 
+Im Zuge dieses Projektes war aber Flutter als Gesamtpacket attraktiver.
+
+\newpage
+
+\section{Vor- und Nachteile von C gegenüber Arduino IDE:}
+Die Programmiersprache C ist eine der am häufigsten verwendeten Programmiersprachen für die Mikroprozessorprogrammierung. 
+C ist eine Hochsprache, die auf einer Vielzahl von Plattformen ausgeführt werden kann und gleichzeitig eine systemnahe Programmierung ermöglicht. 
+Dies macht C zu einer beliebten Wahl für die Entwicklung von Firmware und Anwendungen für Mikrocontroller und Mikroprozessoren.
+Ein Vorteil von C ist seine Effizienz und Leistungsfähigkeit. 
+C ist eine schnelle und effiziente Programmiersprache, die eine direkte Steuerung der Hardware ermöglicht und daher ideal für \newline die Mikroprozessorprogrammierung ist. 
+Es bietet auch eine umfangreiche Unterstützung für arithmetische Operationen und Bitmanipulationen, die bei der Entwicklung von Embedded-Systemen häufig erforderlich sind.
+C bietet auch eine hohe Portabilität und eine umfangreiche Unterstützung durch eine aktive Entwicklergemeinschaft. C-Code kann auf einer Vielzahl von Mikroprozessoren und Betriebssystemen ausgeführt werden und ist in der Regel plattformunabhängig.
+Die C-Standardbibliothek bietet eine Vielzahl von Funktionen, die in der Mikroprozessorprogrammierung häufig verwendet werden, wie z.B. mathematische Funktionen, Ein- und Ausgabe, Zeichenkettenmanipulation und Speicherverwaltung.
+Ein weiterer Vorteil von C ist die Möglichkeit zur Optimierung des Codes. C bietet Entwicklern die Möglichkeit, den Code für die Mikroprozessorprogrammierung manuell zu optimieren, um eine bessere Leistung und effizientere Nutzung von Ressourcen zu erzielen. 
+Dies ist besonders wichtig bei der Entwicklung von Anwendungen für Embedded-Systeme, bei denen die Ressourcen begrenzt sind und die Leistung von größter Bedeutung ist.
+Im Vergleich zur Programmierung mit der Arduino IDE gibt es jedoch einige mögliche Vor- und Nachteile von C. Die Arduino IDE ist eine integrierte Entwicklungsumgebung (IDE), die speziell für die Programmierung von Arduino-Mikrocontrollern entwickelt wurde. 
+Die IDE bietet eine vereinfachte Programmierschnittstelle und eine Reihe von Bibliotheken und Beispielcodes, die die Entwicklung von Anwendungen für Arduino-Mikrocontroller erleichtern.
+Ein Vorteil der Arduino IDE ist ihre Benutzerfreundlichkeit. Die IDE bietet eine intuitive Benutzeroberfläche, die es auch Einsteigern erleichtert, Mikrocontroller zu programmieren. 
+Die IDE enthält auch eine Vielzahl von Beispielen und Bibliotheken, die die Entwicklung von Anwendungen beschleunigen können.
+Ein Nachteil der Arduino IDE ist jedoch, dass sie auf der Verwendung von speziell entwickelten Funktionen und Bibliotheken basiert, die nicht unbedingt mit anderen Mikroprozessoren und Plattformen kompatibel sind. 
+Dies kann die Wiederverwendbarkeit von Code und die Portabilität von Anwendungen einschränken. 
+Darüber hinaus kann die Verwendung von vorgefertigten Bibliotheken die Flexibilität und Kontrolle über die Anwendung einschränken. 
+Insgesamt bietet die Programmiersprache C eine leistungsstarke und flexible Option für die Mikroprozessorprogrammierung. 
+Es bietet Entwicklern eine direkte Kontrolle über die Hardware und eine effiziente Nutzung von Ressourcen, was bei der Entwicklung von Embedded-Systemen von entscheidender Bedeutung ist. 
+C bietet auch eine hohe Portabilität und Flexibilität, was die Wiederverwendbarkeit von Code und die Entwicklung von Anwendungen für eine Vielzahl von Plattformen ermöglicht.
+Jedoch erfordert die Programmierung mit C ein höheres Maß an Erfahrung und technischen Kenntnissen als die Programmierung mit der Arduino IDE. Entwickler müssen in der Lage sein, Code von Grund auf zu schreiben und manuell zu optimieren, was eine höhere Komplexität und ein höheres Maß an Kontrolle erfordert. 
+Dies kann die Entwicklung von Anwendungen in C zeitaufwändiger und komplizierter machen als die Verwendung von vorgefertigten Bibliotheken in der Arduino IDE.
+Insgesamt hängt die Wahl zwischen C und der Arduino IDE von den spezifischen Anforderungen und Anwendungen ab. Wenn eine höhere Kontrolle über die Hardware und eine optimale Leistung erforderlich sind, ist C möglicherweise die bessere Wahl. 
+Wenn jedoch eine einfachere Programmierschnittstelle und eine schnellere Entwicklung erforderlich sind, kann die Arduino IDE eine bessere Option sein.
+
+\newpage
+
+\section{Flutter:}
+
+Flutter ist ein Open-Source-Framework, das von Google entwickelt wurde, um die App-Entwicklung zu erleichtern. 
+Es wurde erstmals im Jahr 2017 veröffentlicht und hat seitdem an Beliebtheit gewonnen. 
+Ein großer Vorteil von Flutter ist die Möglichkeit, plattformübergreifende Apps zu erstellen. 
+Mit Flutter können Entwickler Apps für iOS und Android mit einer einzigen Codebase erstellen, was die Entwicklungszeit erheblich verkürzt. 
+Im Vergleich dazu erfordert die native App-Entwicklung separate Codebases für jede Plattform, was zu einer längeren Entwicklungszeit führt. 
+Außerdem können Entwickler mit Flutter auch Apps für das Web, Desktop und Embedded-Geräte erstellen, was die Flexibilität des Frameworks weiter erhöht. 
+Ein weiterer Vorteil von Flutter ist die schnelle Entwicklung. Flutter bietet ein Hot-Reload-Feature, das Entwicklern die Möglichkeit gibt, Änderungen an ihrem Code vorzunehmen und die Auswirkungen dieser Änderungen sofort zu sehen, ohne dass sie die App neu starten müssen. 
+Dies ermöglicht es Entwicklern, schnell Fehler zu beheben und Funktionen hinzuzufügen, was zu einer schnelleren Entwicklung und einer schnelleren Markteinführung führt. 
+Flutter bietet auch eine hohe Benutzeroberflächen-Performance. 
+Es verwendet eine eigene Rendering-Engine, die es Entwicklern ermöglicht, eine reibungslose und schnelle Benutzeroberfläche zu erstellen. 
+Im Vergleich dazu sind andere Frameworks wie React-Native darauf angewiesen, dass die nativen APIs der Plattform für die Benutzeroberflächen-Performance verwendet werden. 
+Ein weiterer Vorteil von Flutter ist die einfache Anpassbarkeit der Benutzeroberfläche. 
+Flutter bietet eine Vielzahl von Widgets, die Entwickler verwenden können, um eine ansprechende Benutzeroberfläche zu erstellen. 
+Diese Widgets sind anpassbar und können für verschiedene Zwecke verwendet werden. 
+Darüber hinaus können Entwickler mit Flutter auch benutzerdefinierte Widgets erstellen, um eine einzigartige Benutzeroberfläche zu erstellen. 
+Flutter bietet auch eine umfassende Dokumentation und Unterstützung. 
+Es gibt eine aktive Community von Entwicklern, die Flutter verwenden und Unterstützung bieten. 
+Darüber hinaus bietet Google eine umfassende Dokumentation und Schulungsmaterialien für Entwickler, die Flutter verwenden möchten. 
+Ein weiterer Vorteil von Flutter ist die einfache Integration von Drittanbieter-Bibliotheken. 
+Entwickler können leicht Drittanbieter-Bibliotheken in ihre Flutter-Apps integrieren, um zusätzliche Funktionen hinzuzufügen. 
+Darüber hinaus bietet Flutter eine Vielzahl von Plugins und Paketen, die Entwickler verwenden können, um ihre Apps zu erweitern.
+Flutter bietet auch eine hohe Stabilität und Sicherheit. Die Entwicklung von Flutter erfolgt in einer isolierten Umgebung, um sicherzustellen, dass keine externen Faktoren die Stabilität des Frameworks beeinträchtigen. 
+Darüber hinaus bietet Flutter auch eine hohe Sicherheit, da es das Dart-Programmiersprache verwendet, die eine starke Typisierung und Überprüfung von Variablen und Objekten ermöglicht. 
+Dies hilft, potenzielle Fehler und Sicherheitsprobleme frühzeitig zu erkennen und zu vermeiden.
+Ein weiterer Vorteil von Flutter ist die einfache Wartung. 
+Da Entwickler nur eine einzige Codebase für plattformübergreifende Apps verwenden, wird die Wartung der Apps wesentlich einfacher. 
+Entwickler müssen keine separate Codebase für jede Plattform pflegen, was zu einer deutlichen Reduzierung des Wartungsaufwands führt.
+Flutter ist auch sehr skalierbar. Es ermöglicht Entwicklern, Apps für eine große Anzahl von Benutzern zu erstellen und zu skalieren, ohne dass es zu Leistungsproblemen kommt. 
+Flutter verwendet eine hocheffiziente Rendering-Engine und bietet auch Funktionen wie Lazy Loading, um sicherzustellen, dass Apps schnell und effizient ausgeführt werden können.
+Ein Vorteil von Flutter ist die einfache Integration von Backend-Systemen. 
+Flutter bietet eine Vielzahl von Optionen für die Integration von Backend-Systemen, einschließlich RESTful APIs und Datenbanken. 
+Dies ermöglicht Entwicklern, leistungsfähige Apps zu erstellen, die nahtlos mit Backend-Systemen interagieren können.
+Ein weiterer Vorteil von Flutter ist die Verfügbarkeit von Tools und Frameworks für automatisierte Tests. 
+Mit Flutter können Entwickler automatisierte Tests für ihre Apps erstellen, um sicherzustellen, dass sie korrekt funktionieren und fehlerfrei sind. 
+Flutter bietet auch eine Vielzahl von Tools und Frameworks für die Durchführung von Tests, einschließlich Widget-Tests und Integrationstests.
+Insgesamt bietet Flutter eine Vielzahl von Vorteilen für Entwickler, die plattformübergreifende Apps erstellen möchten.
+Es ermöglicht Entwicklern, schnell und effizient Apps zu erstellen, die auf verschiedenen Plattformen und Geräten ausgeführt werden können. 
+Flutter bietet auch eine hohe Benutzeroberflächen-Performance, Anpassbarkeit, Dokumentation und Unterstützung, Integration von Drittanbieter-Bibliotheken, Stabilität, Sicherheit, Wartbarkeit, Skalierbarkeit und Integration von Backend-Systemen. 
+Daher ist Flutter eine ausgezeichnete Wahl für Entwickler, die eine plattformübergreifende App erstellen möchten, die schnell, effizient und ansprechend ist.
+\newpage
+
+\section{Verwendete Libraries in Flutter:}
+\subsection*{syncfusion\_flutter\_charts:}
+
+Die Flutter-Bibliothek "syncfusion\_flutter\_charts" ist eine leistungsstarke und vielseitige Lösung für Flutter-Entwickler, die qualitativ hochwertige und anpassbare Diagramme in ihren Anwendungen erstellen möchten. 
+In diesem Artikel werden wir die Funktionen und Vorteile der Bibliothek genauer betrachten. 
+Syncfusion-Flutter-Charts ist eine Bibliothek von Diagrammen und Grafiken, die in Flutter-Anwendungen verwendet werden können. Die Bibliothek bietet eine breite Palette von Diagrammtypen, darunter Balken-, Linien-, Kreis-, Flächen-, Säulen-, Scatter- und Bubble-Diagramme. 
+Darüber hinaus bietet es eine Vielzahl von Funktionen und Anpassungsoptionen, um Benutzern eine bessere Kontrolle über das Erscheinungsbild und die Funktionalität ihrer Diagramme zu geben.
+Die Syncfusion-Flutter-Charts-Bibliothek bietet eine Vielzahl von Diagrammtypen, die für verschiedene Anwendungen und Anforderungen geeignet sind. Zu den verfügbaren Diagrammtypen gehören:
+\begin{itemize}
+    \item Balkendiagramm: ein Diagrammtyp, der verwendet wird, um Daten in horizontalen Balken darzustellen.
+    \item Liniendiagramm: ein Diagramm, das verwendet wird, um Daten in einer Linie darzustellen, die durch die Punkte in einem Koordinatensystem verläuft.
+    \item Kreisdiagramm: ein Diagrammtyp, der verwendet wird, um Daten in einem Kreis darzustellen.
+    \item Flächendiagramm: ein Diagramm, das verwendet wird, um Daten in einer Fläche darzustellen, die durch die Punkte in einem Koordinatensystem begrenzt wird.
+    \item Säulendiagramm: ein Diagrammtyp, der verwendet wird, um Daten in vertikalen Säulen darzustellen.
+    \item Scatter-Diagramm: ein Diagrammtyp, der verwendet wird, um Datenpunkte in einem Koordinatensystem darzustellen.
+    \item Bubble-Diagramm: ein Diagrammtyp, der verwendet wird, um Datenpunkte in einem Koordinatensystem darzustellen, wobei die Größe jedes Punktes ein zusätzliches Datenattribut darstellt.
+\end{itemize}
+Syncfusion-Flutter-Charts bietet eine breite Palette von Anpassungsoptionen, mit denen Benutzer das Erscheinungsbild und die Funktionalität ihrer Diagramme steuern können. 
+Zu den verfügbaren Anpassungsoptionen gehören:
+\begin{itemize}
+    \item Achsenanpassung: Die Benutzer können die Achsenbeschriftungen, die Achsentitel und die Achsenposition anpassen.
+    \item Legendenanpassung: Die Benutzer können die Position, Größe, Schriftart und Farbe der Legende anpassen.
+    \item Farbanpassung: Die Benutzer können die Farbe jedes Diagrammelements anpassen, einschließlich der Datenpunkte, der Achsenlinien und der Hintergrundfarbe des Diagramms.
+    \item Beschriftungsanpassung: Die Benutzer können die Größe, Farbe und Schriftart der Beschriftungen anpassen, die jedes Diagrammelement begleiten.
+\end{itemize}
+Syncfusion-Flutter-Charts wurde mit einem API-Design entwickelt, 
+das einfach zu verwenden und intuitiv zu verstehen ist. 
+Die API bietet den Benutzern eine klare Dokumentation und viele Beispiele, um den Einstieg zu erleichtern. 
+Die API bietet eine Vielzahl von Methoden und Eigenschaften, die es den Benutzern ermöglichen, ihre Diagramme 
+anzupassen und Daten zu aktualisieren.
+\newline
+Syncfusion-Flutter-Charts ist auch eine leistungsstarke Bibliothek. 
+Die Bibliothek bietet eine Vielzahl von Optimierungen, um sicherzustellen, dass Diagramme schnell gerendert werden und auf verschiedenen Geräten gut funktionieren. 
+Einige der Leistungsmerkmale der Bibliothek sind:
+\begin{itemize}
+    \item Datenbindung: Syncfusion-Flutter-Charts unterstützt die Bindung von Datenquellen wie Listen und Arrays. Dadurch wird das Aktualisieren von Daten in Echtzeit erleichtert.
+    \item Animationen: Syncfusion-Flutter-Charts bietet eine Vielzahl von Animationen, die auf Diagrammen angewendet werden können, um die Benutzererfahrung zu verbessern.
+    \item Interaktivität: Die Bibliothek unterstützt eine Vielzahl von Interaktionen, einschließlich Zoomen, Schwenken, Berühren und Klicken.
+    \item Responsivität: Syncfusion-Flutter-Charts wurde für verschiedene Gerätegrößen optimiert und kann auf verschiedenen Geräten gut funktionieren.
+\end{itemize}
+
+\subsection*{http-Library:}
+http-Library ist eine Bibliothek für Flutter, die Entwicklern ermöglicht, HTTP-Anfragen an einen Server zu senden und Daten abzurufen. 
+Die Bibliothek basiert auf der Dart-Programmiersprache und bietet eine einfache und intuitive API für Entwickler, um auf HTTP-Ressourcen zuzugreifen. 
+Mit diesem Library wird auf die http-Requests die von dem ESP32 bereitgestellt werden, zugegriffen. 
+Die http-Library unterstützt eine Vielzahl von HTTP-Anfragen, einschließlich GET, POST, PUT, DELETE, HEAD und PATCH. 
+Entwickler können diese Anfragen verwenden, um Ressourcen von einem Server abzurufen oder zu aktualisieren. Die http-Library wurde mit einem API-Design entwickelt, das einfach zu verwenden und intuitiv zu verstehen ist. 
+Die API bietet den Entwicklern eine klare Dokumentation und viele Beispiele, um den Einstieg zu erleichtern. Die API bietet eine Vielzahl von Methoden und Eigenschaften, die es den Entwicklern ermöglichen, HTTP-Anfragen zu erstellen und auf HTTP-Antworten zuzugreifen. 
+Die http-Library bietet eine Vielzahl von Leistungsmerkmalen, um sicherzustellen, dass HTTP-Anfragen schnell und effizient ausgeführt werden. 
+Einige der Leistungsmerkmale der Bibliothek sind: 
+
+\begin{itemize}
+    \item Parallelität: http-Library unterstützt parallele HTTP-Anfragen, was die Leistung verbessert und die Antwortzeiten verkürzt.
+    \item Caching: Die Bibliothek unterstützt das Zwischenspeichern von HTTP-Anfragen, was die Leistung verbessert und den Netzwerkverkehr verringert.
+    \item SSL/TLS-Unterstützung: Die Bibliothek unterstützt SSL/TLS-Verschlüsselung, um sicherzustellen, dass HTTP-Anfragen sicher und geschützt sind.
+\end{itemize}
+
+\subsection*{Intl-Library:}
+Im Zuge dieser Diplomarbeit wurde das Intl-Library verwendet um den „Epoch-Timestamp“ der von dem Web-Server übergeben wird in ein weiterzuverwendendes Datums-Format zu konvertieren. 
+Jedoch sind dies nicht die einzigen Funktionen die dieses Library bietet.
+\newline
+Intl ist eine Bibliothek für Flutter, die Entwicklern ermöglicht, Anwendungen einfach zu internationalisieren. 
+Die Bibliothek bietet Unterstützung für Textübersetzungen, Datums- und Zeitformatierung sowie Währungsformatierung. 
+Sie bietet Entwicklern eine einfache API, um die Sprache und Region der Benutzeroberfläche von Anwendungen dynamisch zu ändern.
+Die Bibliothek bietet Unterstützung für Textübersetzungen, die es Entwicklern ermöglichen, Anwendungen in verschiedene Sprachen zu übersetzen. 
+Entwickler können Textstrings in ihren Anwendungen markieren und dann Übersetzungen in verschiedenen Sprachen bereitstellen. Die Bibliothek unterstützt eine Vielzahl von Sprachen und bietet eine einfache API, um Textstrings in verschiedenen Sprachen abzurufen. 
+Intl bietet auch Unterstützung für Währungsformatierung. Entwickler können Währungsbeträge in verschiedenen Ländern und Regionen formatieren. 
+Die Bibliothek bietet eine Vielzahl von Optionen, um Währungsbeträge in verschiedenen Formaten darzustellen.
+
+\subsection*{Material-Library:}
+Das Flutter-Package "flutter/material" ist ein wichtiger Bestandteil des Flutter-Frameworks, der eine Vielzahl von Material-Design-Widgets für die Entwicklung von ansprechenden und interaktiven Benutzeroberflächen bereitstellt. 
+In diesem Artikel werden wir die Funktionen und Vorteile dieses Packages genauer betrachten.
+Das flutter/material Package ist ein Teil des Flutter-Frameworks, das eine Vielzahl von Material-Design-Widgets zur Verfügung stellt. 
+Es ist Teil des Material-Design-Konzepts von Google und bietet Entwicklern eine umfangreiche Sammlung von Widgets und Design-Elementen, um ansprechende und benutzerfreundliche Anwendungen zu erstellen.
+Material Design ist ein Designkonzept von Google, das darauf abzielt, Benutzererfahrungen zu verbessern, indem es klare visuelle Elemente und Interaktionen bietet. 
+Material Design ist eine einfache, intuitive und konsistente Methode zur Gestaltung von Benutzeroberflächen, die Entwicklern dabei hilft, Anwendungen schnell und effektiv zu erstellen.
+Das flutter/material Package stellt eine Vielzahl von Widgets zur Verfügung, die auf das Material-Design-Konzept abgestimmt sind. 
+Diese Widgets sind in der Regel einfach zu verwenden und bieten eine breite Palette von Anpassungsmöglichkeiten, um Benutzeroberflächen anzupassen und individuell zu gestalten.
+Einige der wichtigsten Material-Design-Widgets, die das flutter/material Package zur Verfügung stellt, sind:
+\begin{itemize}
+    \item Buttons
+    \item Textfelder
+    \item Schalter
+    \item Dropdown-Buttons
+    \item Snackbar
+    \item Dialoge
+    \item Navigationselemente
+\end{itemize}
+Material-Design-Widgets sind in der Regel einfach zu verwenden und bieten eine breite Palette von Anpassungsmöglichkeiten, 
+um Benutzeroberflächen anzupassen und individuell zu gestalten.
+\newline
+Das flutter/material Package bietet auch eine Vielzahl von Layout-Widgets, die es Entwicklern ermöglichen, ansprechende und gut strukturierte Benutzeroberflächen zu erstellen. 
+Einige der wichtigsten Layout-Widgets, die das Package zur Verfügung stellt, sind:
+\begin{itemize}
+    \item Row: Eine Row ist ein Layout-Widget, das Widgets horizontal anordnet. Widgets innerhalb einer Row werden normalerweise gleichmäßig auf die verfügbare Breite verteilt.
+    \item Column: Eine Column ist ein Layout-Widget, das Widgets vertikal anordnet. Widgets innerhalb einer Column werden normalerweise gleichmäßig auf die verfügbare Höhe verteilt.
+    \item Stack: Ein Stack ist ein Layout-Widget, das es Entwicklern ermöglicht, Widgets übereinander zu stapeln. Widgets innerhalb eines Stacks können positioniert und ausgerichtet werden.
+    \item Card: Eine Card ist ein Material-Design-Widget, das einen visuellen Container darstellt, der Informationen enthält. Karten können verwendet werden, um Informationen klar und einfach darzustellen 
+    \item AppBar: Eine AppBar ist ein Material-Design-Widget, das eine Navigationsleiste am oberen Rand der Anwendung darstellt. Eine AppBar kann verwendet werden, um Navigationsfunktionen bereitzustellen und den Benutzern eine einfache Möglichkeit zu geben, durch Anwendungen zu navigieren.
+    \item Scaffold: Ein Scaffold ist ein Material-Design-Widget, das die Grundlage für die meisten Flutter-Anwendungen bildet. Ein Scaffold stellt eine Standardstruktur für eine Anwendung bereit, einschließlich einer AppBar, einem Navigationsschubladenmenü und einem Bereich zum Anzeigen von Inhalten. Entwickler können das Scaffold-Widget verwenden, um schnell und einfach eine Grundstruktur für ihre Anwendung zu erstellen und diese anzupassen.
+\end{itemize}
+Natürlich gibt es noch unzählige weitere Widgets aber diese alle anzuführen würde den Rahmen dieser Diplomarbeit sprengen.
+
+
+
+\section{C:}
+Die Programmiersprache C hat sich schnell als eine ideale Wahl für die Betriebssystem-Entwicklung etabliert. Ihre Flexibilität und Effizienz erlaubten es den Entwicklern, auf niedriger Ebene zu programmieren und gleichzeitig leicht verständlichen und wartbaren Code zu schreiben. 
+Dadurch wurde C zur bevorzugten Sprache für die Programmierung von Betriebssystemen wie UNIX, Linux und Windows. C hat auch in eingebetteten Systemen, wie Mikrocontrollern und hardwarenahen Anwendungen, eine wichtige Rolle gespielt. 
+Aufgrund ihrer Fähigkeit, auf niedriger Ebene zu arbeiten und die Hardware effizient zu nutzen, ist die Sprache C besonders gut geeignet für die Programmierung von eingebetteten Systemen, in denen Ressourcen wie Speicher und Rechenleistung knapp sind. 
+C ist nicht nur für die Betriebssystem- und eingebettete System-Entwicklung wichtig, sondern auch in einer Vielzahl anderer Anwendungsbereiche. 
+Beispiele hierfür sind Netzwerkprogrammierung, Datenbankentwicklung und grafische Anwendungen. Im Laufe der Zeit wurde die Programmiersprache C weiterentwickelt und standardisiert. 
+Der erste offizielle Standard wurde 1989 als ANSI C verabschiedet und später im Jahr. 1990 als ISO/IEC 9899:1990 international anerkannt. Diese Standardisierung führte zu einer größeren Konsistenz und Portabilität des C-Codes über verschiedene Plattformen hinweg. 
+Seit der ersten Standardisierung wurde die Programmiersprache C weiterentwickelt und hat mehrere Revisionen und Erweiterungen erfahren, wie etwa C99, C11 und C18. 
+Diese Revisionen führten zu Verbesserungen in der Sprache, wie etwa die Einführung von neuen Datentypen, verbesserte Typsicherheit und die Integration von Funktionen zur parallelen Programmierung.
+Darüber hinaus hat C eine Reihe von verwandten Sprachen hervorgebracht, wie zum Beispiel C++, Objective-C und C\#. 
+Diese Sprachen haben ihre eigene Identität und Verwendungszwecke, sind aber in vielerlei Hinsicht mit der ursprünglichen Sprache C verwandt und bauen auf ihrem Erbe auf.
+Die Programmiersprache C hat einen tiefgreifenden Einfluss auf die Informatik gehabt. Sie hat viele moderne Programmiersprachen beeinflusst und war ein entscheidender Faktor für den Erfolg des UNIX-Betriebssystems. 
+Darüber hinaus hat sie die Art und Weise, wie Betriebssysteme und Software entwickelt werden, nachhaltig geprägt. 
+Obwohl in den letzten Jahrzehnten viele neue Programmiersprachen entstanden sind, bleibt C weiterhin relevant und wird in zahlreichen Anwendungsbereichen eingesetzt. 
+Die kontinuierliche Weiterentwicklung und Standardisierung der Sprache hat dazu beigetragen, dass C auch in der Zukunft eine wichtige Rolle in der Softwareentwicklung spielen wird.
+Die Programmiersprache hat sich als essenzielles Werkzeug in der Entwicklung von Betriebssystemen und eingebetteten Systemen erwiesen und hat die Grundlage für viele moderne Programmiersprachen geschaffen. 
+Ihre Rolle in der Ausbildung und der fortlaufenden Weiterentwicklung und Standardisierung sichert ihre Bedeutung auch für zukünftige Generationen von Programmierern und Softwareentwicklern.
+
+
+
+
+\section{Verwendete Libraries in C:}
+\subsection*{ESP-SDK:}
+Das ESP-SDK ist ein Software Development Kit, das die Entwicklung von Anwendungen für die ESP-Serie von Mikrocontrollern in der Programmiersprache C ermöglicht.
+Diese Mikrocontroller sind aufgrund ihrer drahtlosen Kommunikationsfähigkeiten und ihres niedrigen Energieverbrauchs ideal für das Internet der Dinge (IoT) geeignet. 
+Das ESP-SDK bietet eine umfassende Sammlung von Softwarebibliotheken und -tools, die die Entwicklung von IoT-Anwendungen in C erleichtern. 
+Zu den wichtigsten Funktionen gehören:
+
+\begin{itemize}
+    \item Unterstützung für drahtlose Kommunikationsprotokolle, wie Wi-Fi und Bluetooth
+    \item Integration von Netzwerkprotokollen wie HTTP, MQTT und CoAP
+    \item Bibliotheken zur Steuerung von Hardwarekomponenten wie Sensoren und Aktoren
+    \item Unterstützung für Echtzeitanwendungen und Multitasking
+\end{itemize}
+
+\subsubsection*{<esp\_https\_server.h>:}
+
+Die <esp\_http\_server> - Bibliothek unterstützt das Hypertext Transfer Protocol (HTTP), ein Anwendungsprotokoll, das die Grundlage für Datenkommunikation im World Wide Web bildet. 
+Die Bibliothek ermöglicht es Entwicklern, HTTP-Server und -Clients zu erstellen, die GET-, POST-, PUT- und DELETE-Anfragen verarbeiten können.
+Die <esp\_http\_server>-Bibliothek bietet eine einfache, aber leistungsfähige URL-Routing.
+Funktionalität, mit der Entwickler benutzerdefinierte Handler-Funktionen für verschiedene Routen und HTTP-Anfragemethoden definieren können. 
+Diese Handler-Funktionen ermöglichen es, spezifische Aktionen auszuführen, wenn eine bestimmte URL angefordert wird. 
+Beispielsweise kann ein Entwickler eine Funktion definieren, die die Temperatur eines Sensors ausliest und an den Client zurücksendet, wenn eine bestimmte URL aufgerufen wird.
+Die <esp\_http\_server>-Bibliothek unterstützt asynchrone Verarbeitung, sodass mehrere HTTP-Anfragen gleichzeitig und unabhängig voneinander bearbeitet werden können. 
+Dies ist besonders nützlich, um die Leistung und Reaktionsfähigkeit von IoT-Anwendungen zu verbessern, bei denen die Netzwerklatenz eine Rolle spielen kann.
+Die <esp\_http\_server>-Bibliothek ermöglicht die einfache Übertragung von Daten zwischen IoT-Geräten und entfernten Servern oder Clients. 
+\newline
+Dies ist besonders nützlich für die Fernüberwachung von Sensoren und Aktoren in verschiedenen Anwendungsbereichen.
+Die Verwendung der <esp\_http\_server>-Bibliothek ermöglicht es Entwicklern, ihre IoT-Geräte nahtlos in Cloud-Dienste wie AWS, Google Cloud Platform und Microsoft Azure zu integrieren. 
+Durch die Implementierung von HTTP-Servern und -Clients auf den ESP-Mikrocontrollern können Entwickler Daten senden und empfangen, umfangreiche Analysen durchführen und leistungsfähige IoT-Anwendungen entwickeln.
+Eine der fortgeschrittenen Funktionen dieser Bibliothek ist die Unterstützung für WebSockets, die bidirektionale Echtzeitkommunikation zwischen Servern und Clients ermöglicht.
+Die <esp\_http\_server>-Bibliothek bietet eine Reihe von Funktionen, um die Kommunikation über WebSockets zu ermöglichen, einschließlich:
+\begin{itemize}
+    \item WebSocket-Handshake: Die Bibliothek stellt Funktionen bereit, um den WebSocket-Handshake-Prozess durchzuführen, bei dem der Server und der Client die Kommunikation über WebSockets initiieren und aushandeln.
+    \item Senden und Empfangen von WebSocket-Nachrichten: Die <esp\_http\_server>-Bibliothek ermöglicht das Senden und Empfangen von WebSocket-Nachrichten in Text- oder Binärformat, sowohl für den Server als auch für den Client.
+    \item Ereignis-Handling: Die Bibliothek bietet eine ereignisgesteuerte Architektur, um auf WebSocket-bezogene Ereignisse wie Verbindungsänderungen, Nachrichtenempfang und Fehler zu reagieren.
+    \item Verwaltung mehrerer WebSocket-Verbindungen: Die <esp\_http\_server>-Bibliothek unterstützt die Verwaltung mehrerer gleichzeitiger WebSocket-Verbindungen, was für Anwendungen mit mehreren Clients wichtig ist.
+\end{itemize}
+
+Natürlich werden auch REST-APIs unterstutzt.
+\newline
+REST-API-Konzepte:
+\newline
+Die REST-API (Representational State Transfer Application Programming Interface) ist ein Architekturstil, der auf Prinzipien wie Stateless, Cacheable, Client-Server, Layered System und Code on Demand basiert. 
+Sie verwendet Standard-HTTP-Methoden (GET, POST, PUT, DELETE usw.) für den Datenaustausch und ermöglicht die einfache Integration und Interoperabilität zwischen verschiedenen Systemen und Anwendungen.
+\newline
+Schlüsselkomponenten der REST-API in der <esp\_http\_server>-Bibliothek:
+\begin{itemize}
+    \item HTTP-Server:
+    Der HTTP-Server ist das grundlegende Element der Bibliothek und ermöglicht die Verarbeit ung von HTTP-Anfragen und -Antworten. Er unterstützt sowohl 
+    IPv4 als auch IPv6 und kann mehrere gleichzeitige Verbindungen verwalten. Die Bibliothek ermöglicht es Entwicklern, benutzerdefinierte Handler 
+    für verschiedene Routen und HTTP-Methoden zu erstellen, um die gewünschte Funktionalität bereitzustellen.
+    \item URI-Handler:
+    Die URI-Handler sind Funktionen, die auf bestimmte URIs und HTTP-Methoden reagieren und die Anfragen entsprechend verarbeiten. 
+    Die <esp\_http\_server>-Bibliothek ermöglicht die einfache Registrierung 
+    und Entfernung von URI-Handlern, um die Verarbeitung von HTTP-Anfragen an die entsprechenden Ressourcen zuzuweisen.
+    \item Middleware:
+    Middleware-Komponenten ermöglichen die Erweiterung der Funktionalität des HTTP-Servers durch die Implementierung 
+    von Zusatzfunktionen wie Authentifizierung, CORS (Cross-Origin Resource Sharing), Content-Encoding oder Logging. 
+    Diese Komponenten können in den Verarbeitungsprozess der HTTP-Anfrage oder -Antwort eingefügt werden, um zusätzliche Kontrolle und Sicherheit zu gewährleisten.
+    \item JSON-Unterstützung:
+    Die Bibliothek bietet native JSON-Unterstützung, die es Entwicklern ermöglicht, die Kommunikation zwischen 
+    Clients und Servern in einem standardisierten Format zu erleichtern. 
+    Dies erleichtert die Verarbeitung und den Austausch von Daten zwischen verschiedenen Systemen und Anwendungen und fördert die Plattformunabhängigkeit. 
+\end{itemize}
+
+
+
+\newpage
+\subsubsection*{<esp\_wifi.h>:}
+
+Die <esp\_wifi.h>-Bibliothek ist eine wichtige Komponente des ESP-SDK und ermöglicht die Programmierung von Wi-Fi-Funktionen für ESP-Mikrocontroller in der Programmiersprache C. Die <esp\_wifi.h>-Bibliothek 
+bietet eine umfangreiche Sammlung von Funktionen zur Implementierung von Wi-Fi-Kommunikation auf ESP-Mikrocontrollern. 
+Zu den wichtigsten Funktionen gehören:
+
+\begin{itemize}
+    \item Station (STA) und Access Point (AP) Modi: Die Bibliothek ermöglicht die Konfiguration von ESP-Mikrocontrollern als Wi-Fi-Stationen oder Access Points, um Verbindungen mit anderen Wi-Fi-Geräten herzustellen oder bereitzustellen.
+    \item Wi-Fi-Scan: Die <esp\_wifi.h>-Bibliothek stellt Funktionen zur Verfügung, um nach verfügbaren Wi-Fi-Netzwerken in der Umgebung zu suchen und Informationen über sie zu erhalten.
+    \item Wi-Fi-Verbindung und -Trennung: Die Bibliothek bietet Funktionen zum Herstellen und Trennen von Wi-Fi-Verbindungen, einschließlich der Verwaltung von SSIDs, Passwörtern und Sicherheitseinstellungen.
+\end{itemize}
+
+Die <esp\_wifi.h>-Bibliothek ermöglicht die Entwicklung einer Vielzahl von Wi-Fi-basierten Anwendungen für IoT-Geräte, einschließlich:
+
+\begin{itemize}
+    \item Smart-Home-Anwendungen: Die Bibliothek ermöglicht die Implementierung von Wi-Fi-Kommunikation für Smart-Home-Geräte wie Smart-Lampen, Thermostate und Überwachungskameras.
+    \item Fernüberwachung und -steuerung: Durch die Verwendung der Wi-Fi-Funktionalitäten können Entwickler IoT-Geräte erstellen, die über das Internet überwacht und gesteuert werden können.
+    \item Integration in Cloud-Dienste.
+\end{itemize}
+
+\newpage
+\subsubsection*{SPIFFS:}
+Selbst wenn der ESP32 eine beträchtliche Menge an Flash-Speicher hat, ist dieser immer noch begrenzt und nicht so groß wie der Speicher auf einem typischen Computer. 
+Deshalb müssen Entwickler oft spezielle Dateisysteme wie SPIFFS verwenden, um auf dem ESP32 effektiv Dateien zu speichern und zu verwalten.
+SPIFFS wurde speziell für den Einsatz auf dem ESP32 entwickelt und bietet eine effektive Möglichkeit, Daten auf dem Flash-Speicher des ESP32 zu organisieren und zu speichern. 
+Das System verwendet einen Puffermechanismus, um die Daten effizient zwischen dem Flash-Speicher und dem Prozessor zu übertragen, was schnelle Zugriffszeiten ermöglicht. 
+Darüber hinaus teilt das Dateisystem jede Datei in mehrere Blöcke auf und speichert sie an verschiedenen Stellen auf dem Flash-Speicher. 
+Dies sorgt dafür, dass das Dateisystem eine hohe Robustheit aufweist und Daten, die aufgrund von Systemabstürzen oder unerwarteten Stromausfällen beschädigt wurden, wiederherstellen kann.
+Das SPIFFS-Dateisystem bietet auch eine einfache API, die es Entwicklern ermöglicht, schnell auf Dateien zuzugreifen und sie zu verwalten. 
+Das System unterstützt grundlegende Dateisystemfunktionen wie das Öffnen, Schreiben, Lesen und Schließen von Dateien. 
+Darüber hinaus können Entwickler auch benutzerdefinierte Dateiformate definieren, um Daten auf effiziente Weise zu speichern und abzurufen.
+Ein weiterer Vorteil von SPIFFS ist, dass es sehr platzsparend ist. 
+Das Dateisystem ist so optimiert, dass es sehr wenig Speicherplatz benötigt und somit mehr Platz für Anwendungsdaten zur Verfügung steht. 
+Darüber hinaus ist es einfach zu implementieren und erfordert keine spezielle Hardware oder zusätzliche Komponenten.
+Allerdings hat SPIFFS auch einige Nachteile. Es ist beispielsweise nicht so skalierbar wie andere Dateisysteme wie FAT oder NTFS. 
+Das bedeutet, dass es nicht so gut für Anwendungen geeignet ist, die viele Dateien oder sehr große Dateien speichern müssen. 
+Außerdem ist das Dateisystem nicht so flexibel wie andere Dateisysteme und es kann schwierig sein, benutzerdefinierte Funktionen zu implementieren.
+SPIFFS ist eine ausgezeichnete Wahl für Anwendungen auf dem ESP32-Modul, die begrenzten Speicherplatz haben und schnellen Zugriff auf Dateien benötigen. 
+Es bietet eine effiziente Möglichkeit, Daten zu speichern und abzurufen, ist robust und einfach zu verwenden.
+
+
+
+
+
+
+
+
+
+
+
+
+
