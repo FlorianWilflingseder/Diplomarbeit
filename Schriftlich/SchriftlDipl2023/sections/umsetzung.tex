@@ -1,11 +1,11 @@
 \section{Umsetzung:}
-\subsection*{HomeScreen:}
+\subsection*{Frontend:}
 \begin{figure}[h!]
     \begin{minipage}[c]{0.5\textwidth}
       \includegraphics[width=\textwidth]{./pics/StartpageBild.png}
     \end{minipage}
     \begin{minipage}[c]{0.5\textwidth}
-      \label{fig:deinbild}
+      \label{fig:Startpagebild}
       Der Home-Screen basiert auf einem Scroll-View,
       welches den Vorteil bietet ein einheitliches Design auf jeder Art von Bildschrimgröße zu gewährleisten, ohne die Lesbarkeit zu beeinträchtigen. 
       Ein ScrollView in Flutter ist ein Widget, das verwendet wird, um eine Liste von Elementen anzuzeigen, die größer sind als der verfügbare Bildschirm. 
@@ -90,5 +90,62 @@ zu gestalten wird davor für jeden Tag ein Durschnittswert berechnet. Da das Bac
 muss dies auch vorher aufbereitet werden.
 
 
+\newpage
+\subsection*{Umsetzung Backend:}
+\subsubsection*{Generelle Funktionsweise:}
+Die generelle Funktionsweise des Backends basiert auf zwei TTGO-ESP32-LoRa  \newline Mikroprozessoren. 
+Einer dieser Mikrochips(Sender) hat 4 verbaute Sensoren darunter:
+
+\begin{itemize}
+  \item Temperatursensor
+  \item Ph-Sensor
+  \item NTU-Trübungssensor
+  \item Beschleunigungssensor  
+\end{itemize}
+
+Die Sensoren wurden über die vom ESP32 zur Verfügung gestellten Pins angelötet. 
+Der Trübungssensor wurde bei einem ADC-Pin (Analog-Digital-Converter) angelötet, 
+ebenso wie der Ph-Sensor, der Temperatursensor ist bei einem GPIO (General Purpose Input/Output) angebracht und der Beschleunigungssensor bei einem SDA(serial data) und dem SCL(serial clock) Anschluss. 
+Der ESP32(Sender) wird alle 3 Stunden aus seinem Sleep-Zustand aufgeweckt und nimmt eine Messung der Daten vor. Er befindet sich während er inaktiv ist im Sleep damit er noch Stromsparender agiert da er nicht an einer Steckdose angebracht ist sondern mit einer externen Batterie betrieben wird.
+Diese Daten werden direkt nach der Messung an den anderen ESP32(Reciever) gesendet. 
+Die Daten werden nicht auf dem im Wasser schwimmenden Sender gespeichert da dieser äußerst stromsparend vorgehen soll. 
+Die Messwerte werden mittels LoRa-Funk-System welches lokal an dem ESP32 verbaut ist an den Reciever gesendet und dort bei Erhalt mit einem Epoch-Timestamp versehen und in das SPIFF-File-System gespeichert. 
+Das äußerst kleine Speichersystem ermöglicht eine Speicherung der Daten in einem Intervall von allen 3 Stunden über 1 Jahr durchgehend. 
+Die Daten werden mittels Web-Sockets(für die Live-Daten-Aktualisierung) bereitgestellt und mit einem http-Request der alle Daten an das Frontend übergibt falls das Fenster mit den Zeit-Diagrammen aufgerufen wird um sie in die jeweiligen Diagramme einzufügen. 
+Die dazu benötigten Libraries um dies alles in C umzusetzen sind unter „Technologien| Software“ zu finden. 
+
+\newpage
+Die Daten die für eine Routine-Übertragung alle 3 Stunden nötig sind, lauten:
+
+\begin{itemize}
+  \item Datum
+  \item Temperatur
+  \item Ph-Wert
+  \item NTU-Wert
+\end{itemize}
+
+Die Daten des Beschleunigungssensors werden nicht übertragen, um Speicherplatz zu sparen, die Aktualisierungsgeschwindigkeit 
+zu erhöhen und eine Echt-Zeit-Benachrichtigung zu ermöglichen, sondern der Sender sendet eine extra Benachrichtigung falls 
+der Beschleunigungssensor Werte erreicht hat die auf verdächtige Aktivitäten im Wasser hinweisen. 
+Der (Reciever) ESP32 ist  mit dem W-Lan verbunden und permanent eingeschaltet um die Daten 24 Stunden 7 Tage 
+in der Woche zu erhalten zu verarbeiten und für das Frontend für eine http-Request bereitzustellen. 
 
 
+\subsubsection*{Funktion von LoRa in diesem Projekt:}
+
+Die Kommunikationstechnologie, die auf der Basis von Spread-Spectrum-Techniken entwickelt wurde ermöglicht eine drahtlose 
+Kommunikation über große Entfernungen bei niedriger Leistungsaufnahme. 
+In deinem Fall werden die Daten von drei Sensoren (Temperatursensor, pH-Sensor und NTU-Trübungssensor) mithilfe eines \newline ESP32-Mikrocontrollers und eines LoRa-Transceivers an einen zweiten ESP32, der als Empfänger fungiert, übertragen.
+
+
+Hier ist das Grundkonzept, wie LoRa funktioniert und die Daten überträgt:
+
+\begin{itemize}
+  \item Sensoren erfassen Daten: Die drei Sensoren (Temperatur, pH und NTU-Trübung) erfassen Umgebungsdaten und übermitteln diese an den ESP32-Mikrocontroller.
+  \item Datenverarbeitung: Der ESP32-Mikrocontroller verarbeitet die empfangenen Daten, konvertiert sie in ein geeignetes Format und erstellt ein Datenpaket. Dieses Paket enthält die Sensordaten.
+  \item LoRa-Modulation: Der LoRa-Transceiver, der am ESP32 angeschlossen ist, wandelt das Datenpaket in ein Funksignal um, das für die Übertragung über das LoRa-Protokoll geeignet ist. LoRa verwendet eine Chirp Spread Spectrum (CSS)-Technologie, bei der die Frequenz des Funksignals kontinuierlich über eine bestimmte Bandbreite variiert. Diese Technik erhöht die Störfestigkeit und ermöglicht eine effiziente Nutzung des Funkspektrums.
+  \item Datenübertragung: Das modulierte Funksignal wird über die LoRa-Antenne ausgesendet und kann über große Entfernungen übertragen werden. LoRa ist besonders für Anwendungen mit geringem Energieverbrauch und geringer Datenrate geeignet.
+  \item Empfang des Funksignals: Der zweite ESP32, der als Empfänger fungiert, ist ebenfalls mit einem LoRa-Transceiver und einer Antenne ausgestattet. Dieser empfängt das Funksignal, das von der Senderantenne ausgesendet wurde.
+  \item Demodulation und Datenextraktion: Der LoRa-Transceiver am Empfänger demoduliert das empfangene Funksignal und extrahiert das ursprüngliche Datenpaket. Dabei wird die Spread-Spectrum-Technik rückgängig gemacht, um die übertragenen Informationen zurückzugewinnen.
+  \item Datenverarbeitung: Der empfangende ESP32-Mikrocontroller verarbeitet das extrahierte Datenpaket, um die Daten der einzelnen Sensoren (Temperatur, pH und NTU-Trübung) zu erhalten. Anschließend werden die Daten dann für die Zugriffe des Frontends vorbereitet.
+\end{itemize}
