@@ -130,7 +130,14 @@ der Beschleunigungssensor Werte erreicht hat die auf verdächtige Aktivitäten i
 Der (Reciever) ESP32 ist  mit dem W-Lan verbunden und permanent eingeschaltet um die Daten 24 Stunden 7 Tage 
 in der Woche zu erhalten zu verarbeiten und für das Frontend für eine http-Request bereitzustellen. 
 
+\begin{figure}[b]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./pics/Aufbau_Diplomarbeit.png}
+  \caption{Funktionsweise der Datenübertragung}
+  \label{fig:Datenübertragung}
+\end{figure}
 
+\newpage
 \subsubsection*{Funktion von LoRa in diesem Projekt:}
 
 Die Kommunikationstechnologie, die auf der Basis von Spread-Spectrum-Techniken entwickelt wurde ermöglicht eine drahtlose 
@@ -147,5 +154,6 @@ Hier ist das Grundkonzept, wie LoRa funktioniert und die Daten überträgt:
   \item Datenübertragung: Das modulierte Funksignal wird über die LoRa-Antenne ausgesendet und kann über große Entfernungen übertragen werden. LoRa ist besonders für Anwendungen mit geringem Energieverbrauch und geringer Datenrate geeignet.
   \item Empfang des Funksignals: Der zweite ESP32, der als Empfänger fungiert, ist ebenfalls mit einem LoRa-Transceiver und einer Antenne ausgestattet. Dieser empfängt das Funksignal, das von der Senderantenne ausgesendet wurde.
   \item Demodulation und Datenextraktion: Der LoRa-Transceiver am Empfänger demoduliert das empfangene Funksignal und extrahiert das ursprüngliche Datenpaket. Dabei wird die Spread-Spectrum-Technik rückgängig gemacht, um die übertragenen Informationen zurückzugewinnen.
+  \newpage
   \item Datenverarbeitung: Der empfangende ESP32-Mikrocontroller verarbeitet das extrahierte Datenpaket, um die Daten der einzelnen Sensoren (Temperatur, pH und NTU-Trübung) zu erhalten. Anschließend werden die Daten dann für die Zugriffe des Frontends vorbereitet.
 \end{itemize}
