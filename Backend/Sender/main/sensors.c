@@ -25,7 +25,7 @@
 
 #define SENSOR_ADC2_ATTEN ADC_ATTEN_DB_11
 
-#define DELAY 1000 * 10 // 60 * 60
+#define DELAY 1000 * 10 // * 60 * 60 *3
 
 const static char *TAG = "SENDER_TASK";
 

@@ -208,7 +208,7 @@ connect_handler(void *arg, esp_event_base_t event_base, int32_t event_id, void *
 
 uint8_t buf[128];
 
-void
+/* void
 task_rx(void *p)
 {
     httpd_handle_t *serv = (httpd_handle_t *) p;
@@ -261,7 +261,7 @@ task_rx(void *p)
         }
         vTaskDelay(pdMS_TO_TICKS(1000));
     }
-}
+} */
 
 void prepend(char* s, const char* t)
 {
