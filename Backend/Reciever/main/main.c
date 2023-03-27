@@ -46,7 +46,7 @@ get_status_handler(httpd_req_t *req)
         free(buf);
     }
 
-    long ts = -1;
+    /*long ts = -1;
     buf_len = httpd_req_get_url_query_len(req) + 1;
     char param[EXAMPLE_HTTP_QUERY_KEY_MAX_LEN];
     if (buf_len > 1) {
@@ -62,7 +62,7 @@ get_status_handler(httpd_req_t *req)
                 //ESP_LOGI(TAG, "Decoded query parameter => %s", dec_param);
             }
         }
-    }
+    } */
 
     httpd_resp_set_hdr(req, "Content-Type", "application/json");
 

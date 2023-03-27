@@ -169,7 +169,7 @@ sensors_task(void *p)
         
         vTaskDelay(pdMS_TO_TICKS(800));
 
-        // 5YSq5pyI44G+44KK44Gq base64
+       
 
         for (int i = 0; i < device_num; ++i) {
             float newTemp;
