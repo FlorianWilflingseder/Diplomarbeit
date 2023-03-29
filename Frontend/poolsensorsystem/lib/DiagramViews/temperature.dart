@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -10,14 +13,19 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:intl/intl.dart';
 
 class TemperatureData {
-  final String day;
+  final DateTime dt;
   final double temperature;
 
-  TemperatureData(this.day, this.temperature);
+  TemperatureData(this.dt, this.temperature);
 }
 
-String getDayAsString(DateTime time) {
-  DateFormat dateFormat = DateFormat('EEEE', 'de_DE');
+String getDateAsHourString(DateTime time) {
+  DateFormat dateFormat = DateFormat('H', 'de_DE');
+  return dateFormat.format(time);
+}
+
+String getDateAsDayString(DateTime time) {
+  DateFormat dateFormat = DateFormat('E', 'de_DE');
   return dateFormat.format(time);
 }
 
@@ -42,27 +50,24 @@ String getDayAsString(DateTime time) {
 // date.month == 1
 Future<List<Data>> fetchSensorValues() async {
   final response = await http.get(Uri.parse("http://192.168.1.4/api/status"));
+  var rng = Random();
 
   if (response.statusCode == 200) {
     List<Data> values = [];
     List<String> lines = response.body.split('\n');
     initializeDateFormatting('de_DE', null);
-    int epochtime = 1679440224;
-    int realLines = 0;
+    int i = 0;
     for (String line in lines) {
-      epochtime = epochtime + 86400; //!!!!!
-      List<String> data = ("$epochtime;$line")
-          .split(';'); //manuelles DATE backend hat kein timestamp!!!!!!!!!!!!
+      List<String> data = line.split(';');
       if (data.length != 4) continue;
-      DateTime time =
-          DateTime.fromMillisecondsSinceEpoch(int.parse(data[0]) * 1000);
+      DateTime time = DateTime.fromMillisecondsSinceEpoch(
+          (int.parse(data[0]) + 86400 * i) * 1000);
       double ntu = double.parse(data[1]);
       double ph = double.parse(data[2]);
-      double temp = double.parse(data[3]);
+      double temp = /*double.parse(data[3]) **/ rng.nextDouble() * 20;
       values.add(Data(time, ntu, ph, temp));
-      if (values.length == 7) {
-        return values;
-      }
+      ++i;
+      if (i == 7) i = 0;
     }
     return values;
   } else {
@@ -78,8 +83,23 @@ class TemperaturStats extends StatefulWidget {
   State<TemperaturStats> createState() => _TemperaturStatsState();
 }
 
+List<TemperatureData> GetAvg(Map<int, List<TemperatureData>> dateMap) {
+  List<TemperatureData> avg = [];
+  dateMap.forEach((key, value) {
+    double avgTemp = 0;
+    value.forEach((element) {
+      avgTemp += element.temperature;
+    });
+    avgTemp /= value.length;
+
+    avg.add(TemperatureData(value.first.dt, avgTemp));
+  });
+  return avg;
+}
+
 class _TemperaturStatsState extends State<TemperaturStats> {
   List<TemperatureData> data = [];
+  List<TemperatureData> dataHours = [];
   List<charts.Series<TemperatureData, String>> dataTemp = [];
 
   @override
@@ -87,18 +107,39 @@ class _TemperaturStatsState extends State<TemperaturStats> {
     super.initState();
     fetchSensorValues().then((result) {
       setState(() {
-        data = result
-            .map((e) => TemperatureData(getDayAsString(e.date), e.temperature))
-            .toList();
-        dataTemp.add(charts.Series<TemperatureData, String>(
-          id: 'temperature',
-          data: data,
-          domainFn: (TemperatureData temp, _) => temp.day,
-          measureFn: (TemperatureData temp, _) => temp.temperature,
-          colorFn: (_, __) => charts.Color.fromHex(code: '#5493e0AF'),
-          labelAccessorFn: (TemperatureData temp, _) =>
-              temp.temperature.toString(),
-        ));
+        data =
+            result.map((e) => TemperatureData(e.date, e.temperature)).toList();
+
+        Map<int, List<TemperatureData>> dateMap = {};
+        for (var dat in data) {
+          if (!dateMap.containsKey(dat.dt.day)) {
+            dateMap[dat.dt.day] = [];
+          }
+
+          dateMap[dat.dt.day]?.add(dat);
+        }
+
+        List<TemperatureData> dataHoursNIgg = [];
+        for (var lkjhas in data) {
+          if (lkjhas.dt.day == data.first.dt.day) {
+            dataHoursNIgg.add(lkjhas);
+          }
+        }
+        dataHours = dataHoursNIgg;
+
+        List<TemperatureData> avg = GetAvg(dateMap);
+
+        dataTemp = [
+          charts.Series<TemperatureData, String>(
+            id: 'temperature',
+            data: avg,
+            domainFn: (TemperatureData temp, _) => getDateAsDayString(temp.dt),
+            measureFn: (TemperatureData temp, _) => temp.temperature,
+            colorFn: (_, __) => charts.Color.fromHex(code: '#5493e0AF'),
+            labelAccessorFn: (TemperatureData temp, _) =>
+                (temp.temperature.round()).toString(),
+          )
+        ];
       });
     });
   }
@@ -152,7 +193,9 @@ class _TemperaturStatsState extends State<TemperaturStats> {
                   ),
                   isVisible: true,
                   borderColor: Colors.transparent,
-                  interval: 1,
+                  interval: 3,
+                  minimum: 0,
+                  maximum: 24,
                 ),
                 primaryYAxis: NumericAxis(
                   labelStyle: const TextStyle(color: Colors.white),
@@ -172,8 +215,9 @@ class _TemperaturStatsState extends State<TemperaturStats> {
                 ),
                 series: <ChartSeries<TemperatureData, String>>[
                   SplineAreaSeries(
-                    dataSource: data,
-                    xValueMapper: (TemperatureData data, _) => data.day,
+                    dataSource: dataHours,
+                    xValueMapper: (TemperatureData data, _) =>
+                        getDateAsHourString(data.dt),
                     yValueMapper: (TemperatureData data, _) => data.temperature,
                     splineType: SplineType.natural,
                     gradient: LinearGradient(
@@ -186,8 +230,9 @@ class _TemperaturStatsState extends State<TemperaturStats> {
                     ),
                   ),
                   SplineSeries(
-                    dataSource: data,
-                    xValueMapper: (TemperatureData data, _) => data.day,
+                    dataSource: dataHours,
+                    xValueMapper: (TemperatureData data, _) =>
+                        getDateAsHourString(data.dt),
                     yValueMapper: (TemperatureData data, _) => data.temperature,
                     dataLabelSettings: const DataLabelSettings(
                       isVisible: true,
@@ -335,7 +380,8 @@ class _TemperaturStatsState extends State<TemperaturStats> {
                 series: <ChartSeries<TemperatureData, String>>[
                   SplineAreaSeries(
                     dataSource: data,
-                    xValueMapper: (TemperatureData data, _) => data.day,
+                    xValueMapper: (TemperatureData data, _) =>
+                        getDateAsDayString(data.dt),
                     yValueMapper: (TemperatureData data, _) => data.temperature,
                     splineType: SplineType.natural,
                     gradient: LinearGradient(
@@ -349,7 +395,8 @@ class _TemperaturStatsState extends State<TemperaturStats> {
                   ),
                   SplineSeries(
                     dataSource: data,
-                    xValueMapper: (TemperatureData data, _) => data.day,
+                    xValueMapper: (TemperatureData data, _) =>
+                        getDateAsDayString(data.dt),
                     yValueMapper: (TemperatureData data, _) => data.temperature,
                     color: const Color.fromARGB(255, 121, 123, 245),
                     width: 4,
@@ -423,7 +470,8 @@ class _TemperaturStatsState extends State<TemperaturStats> {
                 series: <ChartSeries<TemperatureData, String>>[
                   SplineAreaSeries(
                     dataSource: data,
-                    xValueMapper: (TemperatureData data, _) => data.day,
+                    xValueMapper: (TemperatureData data, _) =>
+                        getDateAsDayString(data.dt),
                     yValueMapper: (TemperatureData data, _) => data.temperature,
                     splineType: SplineType.natural,
                     gradient: LinearGradient(
@@ -437,7 +485,8 @@ class _TemperaturStatsState extends State<TemperaturStats> {
                   ),
                   SplineSeries(
                     dataSource: data,
-                    xValueMapper: (TemperatureData data, _) => data.day,
+                    xValueMapper: (TemperatureData data, _) =>
+                        getDateAsDayString(data.dt),
                     yValueMapper: (TemperatureData data, _) => data.temperature,
                     color: const Color.fromARGB(255, 121, 123, 245),
                     width: 4,
