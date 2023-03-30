@@ -6,7 +6,6 @@ import 'DiagramViews/temperature.dart';
 import 'DiagramViews/ntu.dart';
 import 'DiagramViews/ph.dart';
 
-
 void main() {
   runApp(const MyApp());
 }
@@ -41,8 +40,6 @@ class _MyWidgetState extends State<MyWidget> {
   IconData alarmIcon = Icons.notifications;
   String onOrOff = "ON";
 
-  
-
   @override
   void initState() {
     super.initState();
@@ -51,24 +48,29 @@ class _MyWidgetState extends State<MyWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       backgroundColor: const Color.fromARGB(255, 37, 38, 82),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 37, 38, 82),
-        title: Text("PoolOverview",
-        style: GoogleFonts.poppins(
-        color:Colors.white,
-        fontSize: 30,
-        fontWeight: FontWeight.bold,),
+        title: Text(
+          "PoolOverview",
+          style: GoogleFonts.poppins(
+            color: Colors.white,
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: false,
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 20), // Adjust the left padding
+            padding:
+                const EdgeInsets.only(right: 20), // Adjust the left padding
             child: IconButton(
-              onPressed: () {
-              },
-              icon: const Icon(Icons.refresh, size: 40, color: Colors.white,),
+              onPressed: () {},
+              icon: const Icon(
+                Icons.refresh,
+                size: 40,
+                color: Colors.white,
+              ),
             ),
           ),
         ],
@@ -122,10 +124,12 @@ class _MyWidgetState extends State<MyWidget> {
               subtitle: 'Alarm',
               icon: alarmIcon,
               primary: const Color(0xFF64DFDF), //const Color(0xFF5E60CE)
-              secondary: const Color.fromARGB(66, 100, 223, 223), // const Color.fromARGB(59, 94, 96, 206)
+              secondary: const Color.fromARGB(
+                  66, 100, 223, 223), // const Color.fromARGB(59, 94, 96, 206)
               onPressed: () {
                 setState(() {
-                  if (alarmIcon == Icons.notifications) { // update icon
+                  if (alarmIcon == Icons.notifications) {
+                    // update icon
                     alarmIcon = Icons.notifications_off;
                     onOrOff = "OFF";
                   } else {
@@ -141,9 +145,6 @@ class _MyWidgetState extends State<MyWidget> {
     );
   }
 }
-
-
-
 
 class DataCard extends StatelessWidget {
   final String title;
