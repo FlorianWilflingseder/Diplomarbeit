@@ -3,6 +3,7 @@
 \begin{figure}[h!]
     \begin{minipage}[c]{0.5\textwidth}
       \includegraphics[width=\textwidth]{./pics/StartpageBild.png}
+      \caption{StartpageBild}
     \end{minipage}
     \begin{minipage}[c]{0.5\textwidth}
       \label{fig:Startpagebild}
@@ -17,6 +18,7 @@
   \begin{figure}[h!]
     \begin{minipage}[c]{0.5\textwidth}
       \includegraphics[width=\textwidth]{./pics/Bildschirm­foto 2023-03-24 um 16.25.49.png}
+      \caption{DataCard}
     \end{minipage}
     \begin{minipage}[c]{0.5\textwidth}
       \label{fig:DataCard}
@@ -31,6 +33,7 @@ Die Icons die auf den DataCards zu sehen sind, werden von Google-Material-Icons 
 \begin{figure}[h!]
     \begin{minipage}[c]{0.5\textwidth}
       \includegraphics[width=\textwidth]{./pics/Bildschirm­foto 2023-03-24 um 16.22.40.png}
+      \caption{AlarmOFF}
     \end{minipage}
     \begin{minipage}[c]{0.5\textwidth}
       \label{fig:AlarmOFF}
@@ -43,6 +46,7 @@ Die Icons die auf den DataCards zu sehen sind, werden von Google-Material-Icons 
 \begin{figure}[h!]
     \begin{minipage}[c]{0.4\textwidth}
       \includegraphics[width=\textwidth]{./pics/Diagramme1Bild.png}
+      \caption{Diagramme1Bild}
     \end{minipage}
     \begin{minipage}[c]{0.5\textwidth}
       \label{fig:DigrammeApp1}
@@ -55,6 +59,7 @@ Die Icons die auf den DataCards zu sehen sind, werden von Google-Material-Icons 
 \begin{figure}[h!]
     \begin{minipage}[c]{0.4\textwidth}
       \includegraphics[width=\textwidth]{./pics/Diagramme2Bild.png}
+      \caption{Diagramme2Bild}
     \end{minipage}
     \begin{minipage}[c]{0.5\textwidth}
       \label{fig:DiagrammeApp2}
@@ -75,6 +80,7 @@ Das Design ist dynamisch und passt sich jeder Bildschrimgröße, Auflösung und 
 \begin{figure}[h!]
 \begin{minipage}[c]{0.5\textwidth}
 \includegraphics[width=\textwidth]{./pics/CodeSnippetChartDesign.PNG}
+\caption{CodeSnippetChartDesign}
 \end{minipage}
 \begin{minipage}[c]{0.5\textwidth}
     \label{fig:CodeSnippetGraph}
@@ -157,3 +163,144 @@ Hier ist das Grundkonzept, wie LoRa funktioniert und die Daten überträgt:
   \newpage
   \item Datenverarbeitung: Der empfangende ESP32-Mikrocontroller verarbeitet das extrahierte Datenpaket, um die Daten der einzelnen Sensoren (Temperatur, pH und NTU-Trübung) zu erhalten. Anschließend werden die Daten dann für die Zugriffe des Frontends vorbereitet.
 \end{itemize}
+
+\subsection*{Reciever:}
+
+
+\begin{lstlisting}[language=C, caption={Reciever sendet von LoRa erhaltene Daten an Clients}, label={lst:Reciever}]
+  for (;;) {
+        lora_receive();
+
+        // CURRENT_EPOCH - TIMESTAMP
+        // 0, 1, 2, 3, ....
+        while (lora_received()) {
+            x = lora_receive_packet(buf, sizeof(buf));
+            buf[x] = 0;
+            char *newB = (char*)buf;
+            char str[256];
+            sprintf(str, "%lld;", asd + time(0));
+
+            prepend(newB, str);
+
+            printf("rec: %s\n", newB);
+
+            // timestamp;ph;ntu;temp
+
+            fprintf(fp, "%s\n", newB);
+            fflush(fp);
+
+            size_t clients = max_clients;
+            int client_fds[max_clients];
+            
+            if (httpd_get_client_list(server, &clients, client_fds) == ESP_OK) {
+                for (size_t i = 0; i < clients; ++i) {
+                    int sock = client_fds[i];
+
+                    if (httpd_ws_get_fd_info(server, sock) == HTTPD_WS_CLIENT_WEBSOCKET) {
+                        ESP_LOGI(TAG, "Active client (fd=%d) -> sending async message", sock);
+                        
+                        struct async_resp_arg *resp_arg = malloc(sizeof(struct async_resp_arg));
+                        resp_arg->hd = server;
+                        resp_arg->fd = sock;
+                        resp_arg->buf = (char*)buf;
+                        
+                        if (httpd_queue_work(resp_arg->hd, send_data, resp_arg) != ESP_OK) {
+                            ESP_LOGE(TAG, "httpd_queue_work failed!");
+                            break;
+                        }
+                    }
+                }
+            } else {
+                ESP_LOGE(TAG, "httpd_get_client_list failed!");
+            }
+
+            lora_receive();
+        }
+        vTaskDelay(pdMS_TO_TICKS(1000));
+    }
+\end{lstlisting}
+In diesem Ausschnitt des Reciever-Codes wird lora\_recieve() gestartet. 
+Dadurch wartet der Empfänger auf ein LoRa-Datenpacket. 
+Wenn ein Datenpacket Empfangen wird, wird die „while-Schleife“ ausgeführt und die Packete in den Buffer gelesen und ein Epoch-Timestamp vorne daran gehängt. Danach werden die Daten in den File geschrieben. Dann werden alle Web-Server-Clients abgefragt und die neuen Daten an sie gesendet. Dies wird in der „for-Schleife“ für jeden einzelnen Client wiederholt. Wenn der Client einen Web-Socket ist wird ein anderer Code ausgeführt aber in beiden Fällen werden die Daten an den Client gesendet.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.4\textwidth]{./pics/Reciever Struktur.png}
+  \caption{Reciever Struktur}
+  \label{fig:Reciever Datei-Struktur}
+\end{figure}
+In Wifi.c wird das Wifi-Library eingebunden. In Wifi.h werden die Daten des Routers eingetragen(SSID und Passwort), lora.c ist das Lora Library welche beide in main.c benutzt werden.
+
+\newpage
+\subsection*{Sender:}
+\begin{lstlisting}[language=C, caption={Sender lest die Daten der Sensoren aus und überträgt sie via LoRa}, label={lst:Sender}]
+  void
+  sensors_task(void *p)
+  {
+      int raw;
+      float pH = 0, ntu = 0, temp = 0;
+      char str[64];
+  
+      for(;;) {
+          ESP_ERROR_CHECK(adc_oneshot_config_channel(adc2_handle, PH_SENSOR_ADC2_CHANNEL, &chan_cfg));
+          ESP_ERROR_CHECK(adc_oneshot_read(adc2_handle, PH_SENSOR_ADC2_CHANNEL, &raw));
+          pH = raw * (5.0 / 1024);
+          pH *= 2;
+  
+          esp_err_t err = ds18b20_set_resolution(handle, NULL, DS18B20_RESOLUTION_12B);
+          if (err != ESP_OK) {
+              ESP_LOGI(TAG, "failed to set res");
+          }
+          err = ds18b20_trigger_temperature_conversion(handle, NULL); 
+          if (err != ESP_OK) {
+              ESP_LOGI(TAG, "failed to trigger temp conversion");
+          }
+          
+          vTaskDelay(pdMS_TO_TICKS(800));
+  
+          // 5YSq5pyI44G+44KK44Gq base64
+  
+          for (int i = 0; i < device_num; ++i) {
+              float newTemp;
+              err = ds18b20_get_temperature(handle, device_rom_id[i], &newTemp);
+              if (err != ESP_OK) {
+                  continue;
+              }
+  
+              if (newTemp != 0) {
+                  temp = newTemp;
+              }
+          }
+  
+          ESP_ERROR_CHECK(adc_oneshot_config_channel(adc2_handle, NTU_SENSOR_ADC2_CHANNEL, &chan_cfg));
+          ESP_ERROR_CHECK(adc_oneshot_read(adc2_handle, NTU_SENSOR_ADC2_CHANNEL, &raw));
+          ntu = raw * (5.0 / 1023);
+          ntu /= 20;
+  
+          snprintf(str, 64, "%.2f;%.2f;%.2f", pH, ntu, temp);
+  
+          printf("SENT %s\n", str);
+          lora_send_packet((uint8_t*)str, 64);
+  
+          vTaskDelay(pdMS_TO_TICKS(DELAY));
+      }
+  
+  
+      ESP_ERROR_CHECK(onewire_del_bus(handle));
+      ESP_LOGI(TAG, "1-wire bus deleted");
+  
+      ESP_ERROR_CHECK(adc_oneshot_del_unit(adc2_handle));
+  } 
+\end{lstlisting}
+In diesem Code-Ausschnitt werden die Sensoren an ihren jeweiligen Pins ausgelesen und der zurückgegebene Referenzwerte in die jeweilige Einheit umgerechnet. 
+Daraufhin werden Sie in einen char-Array(String) geladen und in ein LoRa-Packet gepackt und versendet.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.4\textwidth]{./pics/Sender Struktur.png}
+  \caption{Sender Struktur}
+  \label{fig:Sender Datei-Struktur}
+\end{figure}
+
+ds18b20.c und onewire\_bus.c sind die Libraries für den Temperatursensor, lora.c das Library für LoRa, in sensors.c befindet sich der Code für alle Sensoren
+sowie der oben gezeigt Code-Ausschnitt. In main.c wird LoRa und die Sensoren initialisiert. 

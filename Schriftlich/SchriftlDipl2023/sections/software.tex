@@ -12,11 +12,8 @@ Die Datenbank wurde mit einem File-System (Spiffs) auf dem ESP32 realisiert. Als
 
 \section{Unterschied Flutter und React:}
 Flutter und React sind zwei der beliebtesten Frameworks für die Entwicklung von mobilen Anwendungen und Webanwendungen. 
-Beide Frameworks haben ihre eigenen Stärken und Schwächen und eignen sich für unterschiedliche Anwendungen. 
 Flutter ist ein mobiles App-Entwicklungs-Framework, das von Google entwickelt wurde. 
 Es basiert auf der Programmiersprache Dart und verwendet eine eigene Rendering-Engine, die auf der GPU basiert. 
-Flutter bietet eine umfangreiche Sammlung von Widgets und Tools, die Entwicklern helfen, schnell und effizient ansprechende und interaktive mobile Anwendungen zu erstellen. 
-Dazu werden seit mehreren Monaten fast wöchentlich neue Widgets und Funktionen in Flutter hinzugefügt die das App-Development vereinfachen und performanter machen. 
 React hingegen ist ein Framework für die Entwicklung von Webanwendungen, das von Facebook entwickelt wurde. Es basiert auf JavaScript und ermöglicht Entwicklern die Erstellung von ansprechenden und interaktiven \newline 
 Webanwendungen mit einer flexiblen Architektur. 
 React nutzt eine virtuelle DOM-Struktur, die es Entwicklern ermöglicht, schnelle und effiziente Anwendungen zu erstellen. 
@@ -24,23 +21,16 @@ Ein wichtiger Unterschied zwischen Flutter und React ist die Art der Anwendungen
 Flutter wurde speziell für die Entwicklung von mobilen Anwendungen entwickelt, während React in erster Linie für die Entwicklung von Webanwendungen konzipiert wurde. 
 \newline
 Dies bedeutet, dass Flutter speziell auf die Bedürfnisse von mobilen Endbenutzern zugeschnitten ist und deswegen den Use-Case dieser Diplomarbeit trifft, während React auf die Bedürfnisse von Webanwendungen ausgerichtet ist.
-Ein weiterer Unterschied zwischen den beiden Frameworks ist die Art der Programmiersprache, die sie verwenden. 
-Flutter verwendet die Programmiersprache Dart, während React auf JavaScript basiert. 
-Obwohl beide Sprachen objektorientiert sind, gibt es einige Unterschiede zwischen ihnen. Dart ist eine statisch typisierte Sprache, während JavaScript eine dynamisch typisierte Sprache ist. 
-Dies bedeutet, dass Dart eine strengere Typisierung aufweist, was zu einer höheren Codequalität und -sicherheit führen kann. 
-JavaScript ist jedoch flexibler und einfacher zu erlernen.
 Ein weiterer Unterschied zwischen den beiden Frameworks ist ihre Architektur. 
-Flutter verwendet eine Widget-basierte Architektur, bei der alle UI-Elemente als Widgets dargestellt werden. 
-Dies ermöglicht es Entwicklern, schnell und einfach ansprechende Benutzeroberflächen zu erstellen. 
+Flutter verwendet eine Widget-basierte Architektur, bei der alle UI-Elemente als Widgets dargestellt werden.  
 React verwendet hingegen eine komponentenbasierte Architektur, bei der UI-Elemente als Komponenten dargestellt werden.
-Dies ermöglicht es Entwicklern, wiederverwendbare Komponenten zu erstellen und die Code-Organisation zu verbessern.
 Sie unterscheiden sich jedoch nicht nur in der Architektur sondern auch in der Art und Weise, wie sie mit der Plattform interagieren. 
 Flutter verwendet eine eigene Rendering-Engine, die auf der GPU basiert, um eine hohe Leistung und eine schnelle Reaktionszeit zu ermöglichen.
-React hingegen verwendet eine virtuelle DOM-Struktur, die es Entwicklern ermöglicht, Änderungen an der Benutzeroberfläche schnell zu erfassen und anzuzeigen. 
+React hingegen verwendet eine virtuelle DOM-Struktur, die es Entwicklern ermöglicht, Änderungen an der \newpage 
+Benutzeroberfläche schnell zu erfassen und anzuzeigen. 
 Die virtuelle DOM besteht aus JavaScript-Objekten, die die verschiedenen HTML-Elemente, Attribute und Inhalte repräsentieren. 
 Diese virtuelle DOM-Struktur wird verwendet, um Änderungen im UI-Design zu verwalten, bevor sie auf dem tatsächlichen HTML-DOM angewendet werden. 
 Dadurch können Änderungen im UI-Design effizienter und schneller durchgeführt werden, da nur die tatsächlich geänderten Teile aktualisiert werden müssen, ohne das gesamte Dokument neu zu rendern. 
-Diese effiziente Handhabung von UI-Design-Änderungen ist eine der Stärken von React im Vergleich zu anderen JavaScript-Frameworks.
 Ein weiterer wichtiger Unterschied zwischen den beiden Frameworks ist die Verfügbarkeit von Bibliotheken und Tools. Flutter bietet eine umfangreiche Sammlung von Widgets und Tools, die speziell für die Entwicklung von mobilen Anwendungen entwickelt wurden. 
 React hingegen hat eine große und aktive Entwicklergemeinschaft, die eine Vielzahl von Bibliotheken und Tools entwickelt hat, die für die Entwicklung von Webanwendungen genutzt werden können.
 Ein weiterer wichtiger Unterschied ist die Verfügbarkeit von Plattform-Unterstützung. 
@@ -49,11 +39,7 @@ React hingegen unterstützt Webanwendungen sowie mobile Anwendungen durch die Ve
 In Bezug auf die Entwicklungskosten und die Zeit, die für die Entwicklung benötigt wird, haben beide Frameworks ihre Vor- und Nachteile. 
 Flutter bietet eine schnellere Entwicklungszeit und eine geringere Anzahl von Fehlern, da es auf einer Widget-basierten Architektur basiert und über eine umfangreiche Sammlung von Widgets und Tools verfügt. 
 React hingegen hat eine größere Entwicklergemeinschaft und bietet eine größere Flexibilität in der Entwicklung von Webanwendungen.
-Zusammenfassend kann gesagt werden, dass Flutter und React beide starke Frameworks für die Entwicklung von mobilen Anwendungen und Webanwendungen sind. 
-Flutter ist speziell auf die Bedürfnisse von mobilen Endbenutzern zugeschnitten und verwendet eine eigene Rendering-Engine, um eine hohe Leistung zu gewährleisten. 
-React hingegen ist auf die Entwicklung von Webanwendungen ausgerichtet und nutzt eine virtuelle DOM-Struktur, um schnell auf Änderungen in der Benutzeroberfläche zu reagieren. 
-Im Zuge dieses Projektes war aber Flutter als Gesamtpacket attraktiver.
-
+\cite{React}
 \newpage
 
 \section{Vor- und Nachteile von C gegenüber Arduino IDE:}
@@ -131,6 +117,7 @@ Flutter bietet auch eine hohe Benutzeroberflächen-Performance, Anpassbarkeit,
 \newline
 Dokumentation und Unterstützung, Integration von Drittanbieter-Bibliotheken, Stabilität, Sicherheit, Wartbarkeit, Skalierbarkeit und Integration von Backend-Systemen. 
 Daher ist Flutter eine ausgezeichnete Wahl für Entwickler, die eine plattformübergreifende App erstellen möchten, die schnell, effizient und ansprechend ist.
+\cite{Flutter}
 \newpage
 
 \section{Verwendete Libraries in Flutter:}
@@ -204,7 +191,6 @@ Die Bibliothek bietet eine Vielzahl von Optionen, um Währungsbeträge in versch
 
 \subsection*{Material-Library:}
 Das Flutter-Package "flutter/material" ist ein wichtiger Bestandteil des Flutter-Frameworks, der eine Vielzahl von Material-Design-Widgets für die Entwicklung von ansprechenden und interaktiven Benutzeroberflächen bereitstellt. 
-In diesem Artikel werden wir die Funktionen und Vorteile dieses Packages genauer betrachten.
 Das flutter/material Package ist ein Teil des Flutter-Frameworks, das eine Vielzahl von Material-Design-Widgets zur Verfügung stellt. 
 Es ist Teil des Material-Design-Konzepts von Google und bietet Entwicklern eine umfangreiche Sammlung von Widgets und Design-Elementen, um ansprechende und benutzerfreundliche Anwendungen zu erstellen.
 Material Design ist ein Designkonzept von Google, das darauf abzielt, Benutzererfahrungen zu verbessern, indem es klare visuelle Elemente und Interaktionen bietet. 
@@ -250,14 +236,15 @@ Diese Sprachen haben ihre eigene Identität und Verwendungszwecke, sind aber in 
 Die Programmiersprache C hat einen tiefgreifenden Einfluss auf die Informatik gehabt. Sie hat viele moderne Programmiersprachen beeinflusst und war ein entscheidender Faktor für den Erfolg des UNIX-Betriebssystems. 
 Darüber hinaus hat sie die Art und Weise, wie Betriebssysteme und Software entwickelt werden, nachhaltig geprägt. 
 Obwohl in den letzten Jahrzehnten viele neue Programmiersprachen entstanden sind, bleibt C weiterhin relevant und wird in zahlreichen Anwendungsbereichen eingesetzt. 
-
+\cite{C}
+\cite{Wikipedia}
 
 
 
 
 
 \section{Verwendete Libraries in C:}
-\subsection*{ESP-SDK:}
+\subsection{ESP-SDK:}
 Das ESP-SDK ist ein Software Development Kit, das die Entwicklung von Anwendungen für die ESP-Serie von Mikrocontrollern in der Programmiersprache C ermöglicht.
 Diese Mikrocontroller sind aufgrund ihrer drahtlosen Kommunikationsfähigkeiten und ihres niedrigen Energieverbrauchs ideal für das Internet der Dinge (IoT) geeignet. 
 Das ESP-SDK bietet eine umfassende Sammlung von Softwarebibliotheken und -tools, die die Entwicklung von IoT-Anwendungen in C erleichtern. 
@@ -270,7 +257,7 @@ Zu den wichtigsten Funktionen gehören:
     \item Unterstützung für Echtzeitanwendungen und Multitasking
 \end{itemize}
 
-\subsubsection*{<esp\_https\_server.h>:}
+\subsubsection*{<esp\_http\_server.h>:}
 
 Die <esp\_http\_server> - Bibliothek unterstützt das Hypertext Transfer Protocol (HTTP), ein Anwendungsprotokoll, das die Grundlage für Datenkommunikation im World Wide Web bildet. 
 Die Bibliothek ermöglicht es Entwicklern, HTTP-Server und -Clients zu erstellen, die GET-, POST-, PUT- und DELETE-Anfragen verarbeiten können.
@@ -366,7 +353,7 @@ Das bedeutet, dass es nicht so gut für Anwendungen geeignet ist, die viele Date
 Außerdem ist das Dateisystem nicht so flexibel wie andere Dateisysteme und es kann schwierig sein, benutzerdefinierte Funktionen zu implementieren.
 SPIFFS ist eine ausgezeichnete Wahl für Anwendungen auf dem ESP32-Modul, die begrenzten Speicherplatz haben und schnellen Zugriff auf Dateien benötigen. 
 Es bietet eine effiziente Möglichkeit, Daten zu speichern und abzurufen, ist robust und einfach zu verwenden.
-
+\cite{SPIFFS}
 
 
 
