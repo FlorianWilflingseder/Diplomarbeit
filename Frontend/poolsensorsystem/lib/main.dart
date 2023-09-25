@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
 }
 
 Future<List<Data>> fetchSensorValues() async {
-  final response = await http.get(Uri.parse("http://192.168.1.4/api/status"));
+  final response = await http.get(Uri.parse("http://192.168.8.102/api/status"));
 
   if (response.statusCode == 200) {
     List<Data> values = [];
